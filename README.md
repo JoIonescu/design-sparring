@@ -8,6 +8,10 @@ Stress-test your design decisions. Three rounds. A scored verdict. No encouragem
 
 ---
 
+Design Sparring creates spaces for designers to think together, test ideas, and sharpen solutions. Through structured feedback and collaborative critique, we turn design conversations into actionable insights and meaningful innovation.
+
+---
+
 ## Project structure
 
 ```
