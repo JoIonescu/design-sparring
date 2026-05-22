@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 
 const FONTS = "https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Roboto:wght@400;500&family=DM+Mono:wght@300;400&display=swap";
 
@@ -12,26 +13,32 @@ const CSS = `
 }
 body { background: var(--bg); }
 .ds { font-family: var(--sans); background: var(--bg); color: var(--ink); min-height: 100vh; font-size: 16px; line-height: 1.6; }
+
+/* NAV */
 .ds-nav { display: flex; align-items: center; justify-content: space-between; padding: 20px 48px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 100; }
-.ds-logo { font-family: var(--mono); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); cursor: pointer; }
+.ds-logo-wrap { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.ds-logo { font-family: var(--mono); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); }
 .ds-nav-links { display: flex; align-items: center; gap: 12px; }
 .ds-link-btn { background: none; border: none; cursor: pointer; font-family: var(--sans); font-size: 14px; color: var(--muted); padding: 8px 12px; transition: color 0.2s; }
 .ds-link-btn:hover { color: var(--ink); }
 .ds-cta-sm { background: var(--ink); color: var(--bg); border: none; cursor: pointer; font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; padding: 10px 20px; transition: opacity 0.2s; }
 .ds-cta-sm:hover { opacity: 0.8; }
+
+/* ACCOUNT */
 .ds-account-wrap { position: relative; }
-.ds-account-btn { display: flex; align-items: center; gap: 8px; background: none; border: 1px solid var(--border); cursor: pointer; font-family: var(--sans); font-size: 13px; color: var(--ink); padding: 8px 16px; transition: border-color 0.2s; }
+.ds-account-btn { display: flex; align-items: center; gap: 10px; background: none; border: 1px solid var(--border); cursor: pointer; font-family: var(--sans); font-size: 13px; color: var(--ink); padding: 7px 14px; transition: border-color 0.2s; }
 .ds-account-btn:hover { border-color: var(--ink); }
-.ds-dot { width: 6px; height: 6px; border-radius: 50%; background: #5CAD6A; flex-shrink: 0; }
-.ds-dropdown { position: absolute; right: 0; top: calc(100% + 8px); background: var(--bg); border: 1px solid var(--border); min-width: 210px; z-index: 200; padding: 8px 0; }
-.ds-dropdown-meta { padding: 10px 16px 12px; border-bottom: 1px solid var(--border); margin-bottom: 4px; display: flex; align-items: center; justify-content: space-between; }
-.ds-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-.ds-tag-paid { color: var(--accent); }
+.ds-avatar { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: white; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; font-family: var(--mono); flex-shrink: 0; letter-spacing: 0; }
+.ds-dropdown { position: absolute; right: 0; top: calc(100% + 8px); background: var(--bg); border: 1px solid var(--border); min-width: 220px; z-index: 200; padding: 8px 0; }
+.ds-dropdown-meta { padding: 10px 16px 12px; border-bottom: 1px solid var(--border); margin-bottom: 4px; }
+.ds-dropdown-email { font-size: 12px; color: var(--muted); display: block; margin-bottom: 4px; font-family: var(--sans); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ds-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
 .ds-dropdown-item { display: block; width: 100%; text-align: left; background: none; border: none; padding: 10px 16px; font-family: var(--sans); font-size: 14px; color: var(--ink); cursor: pointer; transition: background 0.15s; }
 .ds-dropdown-item:hover { background: var(--surface); }
 .ds-dropdown-divider { border: none; border-top: 1px solid var(--border); margin: 4px 0; }
 .ds-danger-item { color: var(--accent) !important; }
-.ds-upgrade-item { color: var(--accent); font-weight: 500; }
+
+/* HERO */
 .ds-hero { padding: 88px 48px 64px; }
 .ds-hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; max-width: 1100px; margin: 0 auto; }
 .ds-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 28px; animation: fade-up 0.6s ease both 0.1s; }
@@ -40,12 +47,16 @@ body { background: var(--bg); }
 .ds-hero-sub { font-size: 15px; color: var(--muted); line-height: 1.8; margin-bottom: 44px; font-weight: 400; animation: fade-up 0.6s ease both 0.3s; }
 .ds-hero-ctas { display: flex; gap: 20px; align-items: center; animation: fade-up 0.6s ease both 0.4s; }
 .ds-hero-free-note { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-top: 12px; animation: fade-up 0.6s ease both 0.5s; }
-.ds-card-mockup { background: white; border: 1px solid var(--border); padding: 28px; animation: fade-up 0.7s ease both 0.35s; }
+
+/* CAROUSEL */
+.ds-carousel { position: relative; animation: fade-up 0.7s ease both 0.35s; }
+.ds-carousel-card { background: white; border: 1px solid var(--border); padding: 28px; animation: card-fade 0.5s ease; }
+@keyframes card-fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 .ds-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
 .ds-card-lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
 .ds-card-lbl-vs { color: var(--accent); }
 .ds-card-rounds { display: flex; gap: 4px; }
-.ds-card-round-pip { width: 20px; height: 3px; background: var(--border); }
+.ds-card-round-pip { width: 20px; height: 3px; background: var(--border); transition: background 0.3s; }
 .ds-card-round-pip-on { background: var(--accent); }
 .ds-card-txt { font-size: 14px; line-height: 1.7; margin-bottom: 16px; font-weight: 400; }
 .ds-card-yours { color: var(--muted); font-style: italic; }
@@ -54,7 +65,12 @@ body { background: var(--bg); }
 .ds-card-foot { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--border); }
 .ds-round-lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 .ds-defend-lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+.ds-carousel-dots { display: flex; gap: 6px; justify-content: center; margin-top: 14px; }
+.ds-carousel-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); cursor: pointer; transition: background 0.3s; border: none; padding: 0; }
+.ds-carousel-dot-on { background: var(--accent); }
 .ds-hero-rule { max-width: 1100px; margin: 64px auto 0; border: none; border-top: 1px solid var(--border); }
+
+/* SECTIONS */
 .ds-section { padding: 88px 48px; }
 .ds-section-inner { max-width: 1100px; margin: 0 auto; }
 .ds-section-lbl { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 48px; }
@@ -123,34 +139,32 @@ body { background: var(--bg); }
 .ds-input:focus { border-color: var(--ink); }
 .ds-modal-switch { margin-top: 22px; font-size: 13px; color: var(--muted); text-align: center; font-weight: 400; }
 .ds-text-btn { background: none; border: none; cursor: pointer; font-family: var(--sans); font-size: 13px; color: var(--ink); text-decoration: underline; padding: 0; }
-.ds-magic-box { border: 1px dashed var(--border); padding: 22px; margin-top: 8px; }
-.ds-magic-hint { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
 .ds-delete-stack { display: flex; flex-direction: column; gap: 12px; }
 .ds-delete-stack .ds-btn-outline { width: 100%; text-align: center; }
-.ds-acct-plan { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; background: var(--surface); margin-bottom: 28px; }
-.ds-acct-plan-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
-.ds-acct-plan-free { color: var(--muted); }
-.ds-acct-plan-paid { color: var(--accent); }
-.ds-acct-upgrade-btn { background: none; border: 1px solid var(--accent); color: var(--accent); font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; padding: 6px 12px; cursor: pointer; transition: background 0.2s, color 0.2s; }
-.ds-acct-upgrade-btn:hover { background: var(--accent); color: white; }
-.ds-session-list { display: flex; flex-direction: column; margin-bottom: 24px; }
-.ds-session-lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
-.ds-session-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); gap: 16px; }
-.ds-session-row:first-of-type { border-top: 1px solid var(--border); }
-.ds-session-info { flex: 1; }
-.ds-session-title { font-size: 13px; font-weight: 500; display: block; margin-bottom: 2px; }
-.ds-session-date { font-family: var(--mono); font-size: 10px; color: var(--muted); }
-.ds-acct-danger-zone { border-top: 1px solid var(--border); padding-top: 16px; }
+
+/* SESSION HISTORY */
+.ds-history-list { display: flex; flex-direction: column; margin-bottom: 8px; }
+.ds-history-lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+.ds-history-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); gap: 12px; }
+.ds-history-row:first-of-type { border-top: 1px solid var(--border); }
+.ds-history-info { flex: 1; min-width: 0; }
+.ds-history-title { font-size: 13px; font-weight: 500; display: block; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ds-history-date { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+.ds-history-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.ds-download-btn { background: none; border: 1px solid var(--border); cursor: pointer; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 5px 10px; transition: all 0.2s; white-space: nowrap; }
+.ds-download-btn:hover { border-color: var(--ink); color: var(--ink); }
+.ds-acct-danger-zone { border-top: 1px solid var(--border); padding-top: 16px; display: flex; flex-direction: column; gap: 4px; }
+
+/* COOKIE BANNER */
 .ds-cookie { position: fixed; bottom: 0; left: 0; right: 0; background: var(--ink); color: var(--bg); padding: 18px 48px; display: flex; align-items: center; justify-content: space-between; gap: 24px; z-index: 400; animation: cookie-in 0.4s ease; flex-wrap: wrap; }
 @keyframes cookie-in { from { transform: translateY(100%); } to { transform: translateY(0); } }
 .ds-cookie-text { font-size: 13px; font-weight: 400; opacity: 0.85; line-height: 1.6; flex: 1; min-width: 240px; }
 .ds-cookie-text button { background: none; border: none; color: inherit; text-decoration: underline; cursor: pointer; font-size: 13px; opacity: 0.7; padding: 0; font-family: var(--sans); }
-.ds-cookie-text button:hover { opacity: 1; }
 .ds-cookie-actions { display: flex; gap: 12px; align-items: center; flex-shrink: 0; }
-.ds-cookie-accept { background: var(--bg); color: var(--ink); border: none; cursor: pointer; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 20px; transition: opacity 0.2s; }
-.ds-cookie-accept:hover { opacity: 0.85; }
-.ds-cookie-decline { background: none; border: 1px solid rgba(249,247,242,0.3); color: var(--bg); cursor: pointer; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 20px; opacity: 0.7; transition: opacity 0.2s; }
-.ds-cookie-decline:hover { opacity: 1; }
+.ds-cookie-accept { background: var(--bg); color: var(--ink); border: none; cursor: pointer; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 20px; }
+.ds-cookie-decline { background: none; border: 1px solid rgba(249,247,242,0.3); color: var(--bg); cursor: pointer; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 20px; opacity: 0.7; }
+
+/* SPARRING INTERFACE */
 .spar-page { max-width: 680px; margin: 0 auto; padding: 48px 48px 100px; min-height: calc(100vh - 70px); }
 .spar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 52px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
 .spar-exit { background: none; border: none; cursor: pointer; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); transition: color 0.2s; padding: 0; }
@@ -167,7 +181,7 @@ body { background: var(--bg); }
 .spar-textarea:focus { border-color: var(--ink); }
 .spar-submit-row { display: flex; justify-content: flex-end; margin-top: 14px; }
 .spar-char-hint { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.08em; margin-top: 8px; }
-.spar-thread { display: flex; flex-direction: column; gap: 0; }
+.spar-thread { display: flex; flex-direction: column; }
 .spar-turn { padding: 28px 0; border-bottom: 1px solid var(--border); }
 .spar-turn:first-child { border-top: 1px solid var(--border); }
 .spar-turn-lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; display: block; }
@@ -175,7 +189,7 @@ body { background: var(--bg); }
 .spar-turn-text { font-size: 15px; line-height: 1.8; font-weight: 400; }
 .spar-turn-text-user { color: var(--muted); font-style: italic; }
 .spar-counter-body { border-left: 2px solid var(--accent); padding-left: 18px; }
-.spar-turn-text-counter { color: var(--ink); font-weight: 400; }
+.spar-turn-text-counter { color: var(--ink); }
 .spar-defense { padding-top: 32px; }
 .spar-defense-lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; display: block; }
 .spar-loading { display: flex; align-items: center; gap: 12px; padding: 32px 0; }
@@ -203,6 +217,8 @@ body { background: var(--bg); }
 .spar-blind-item::before { content: '⚑'; position: absolute; left: 0; font-size: 11px; color: var(--accent); }
 .spar-verdict-summary { font-size: 15px; color: var(--ink); line-height: 1.85; font-weight: 400; padding: 22px; background: var(--surface); border-left: 3px solid var(--ink); margin-top: 24px; }
 .spar-verdict-actions { display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; }
+
+/* LEGAL */
 .ds-legal { padding: 64px 48px 88px; max-width: 720px; margin: 0 auto; }
 .ds-legal-title { font-family: var(--display); font-size: clamp(32px, 4vw, 52px); font-weight: 900; letter-spacing: -0.02em; margin-bottom: 8px; }
 .ds-legal-date { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 52px; display: block; }
@@ -213,10 +229,45 @@ body { background: var(--bg); }
 .ds-legal ul li::before { content: '—'; position: absolute; left: 0; color: var(--muted); }
 .ds-legal a { color: var(--ink); }
 .ds-legal-rule { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+/* TOAST */
 .ds-toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 13px 26px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; z-index: 1000; white-space: nowrap; animation: toast-in 0.3s ease, toast-out 0.3s ease 2.7s forwards; }
 @keyframes toast-in { from { opacity: 0; transform: translateX(-50%) translateY(8px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
 @keyframes toast-out { to { opacity: 0; } }
 @keyframes fade-up { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+
+/* SCROLL REVEALS */
+.ds-reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.ds-reveal.ds-in-view { opacity: 1; transform: translateY(0); }
+.ds-reveal-d1 { transition-delay: 0.1s; }
+.ds-reveal-d2 { transition-delay: 0.2s; }
+.ds-reveal-d3 { transition-delay: 0.3s; }
+
+/* TYPEWRITER CURSOR */
+.ds-cursor { color: var(--accent); font-weight: 900; animation: cursor-blink 0.75s step-end infinite; }
+@keyframes cursor-blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* WORD BUILD-IN */
+@keyframes word-in { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
+
+/* PIP FILL */
+@keyframes pip-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* CAROUSEL SLIDE-FADE */
+.ds-carousel-card { animation: card-slide-fade 0.5s ease; }
+@keyframes card-slide-fade { from { opacity: 0; transform: translateX(10px) translateY(3px); } to { opacity: 1; transform: translateX(0) translateY(0); } }
+
+/* COUNTER BLOCK ENTRANCE */
+.spar-counter-body { border-left: 2px solid var(--accent); padding-left: 18px; animation: counter-in 0.4s ease; }
+@keyframes counter-in { from { border-left-color: transparent; opacity: 0; } to { border-left-color: var(--accent); opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-reveal { opacity: 1; transform: none; transition: none; }
+  .ds-cursor { animation: none; }
+  .ds-carousel-card { animation: none; }
+  .spar-counter-body { animation: none; }
+}
+
 @media (max-width: 768px) {
   .ds-nav { padding: 16px 20px; } .ds-hero { padding: 52px 20px 48px; } .ds-hero-inner { grid-template-columns: 1fr; gap: 44px; }
   .ds-section { padding: 60px 20px; } .ds-steps { grid-template-columns: 1fr; gap: 36px; } .ds-testi-grid { grid-template-columns: 1fr; gap: 36px; }
@@ -233,32 +284,158 @@ const SCORES_PREVIEW = [
   { label: "Defensibility", score: 2, note: "Collapsed under the second round of questioning." },
   { label: "Blind spots", score: null, note: "Mobile edge cases were never addressed." },
 ];
+
 const STEPS = [
   { n: "01", title: "State your rationale", body: "Describe the design decision you've made and why. A layout choice, a pattern, a product call. Any decision counts." },
   { n: "02", title: "Defend under pressure", body: "The opponent pushes back. Three rounds. Each harder than the last. You respond, clarify, fight for your position." },
   { n: "03", title: "Take the verdict", body: "A structured score across four dimensions. Where your argument held. Where it cracked. What you missed entirely." },
 ];
+
 const TESTIMONIALS = [
   { quote: "I was certain about a navigation decision I'd spent two weeks defending. By round two I couldn't hold my own argument together. We redesigned it the next morning.", name: "Sara K.", role: "Senior Product Designer" },
   { quote: "The verdict flagged a blind spot I'd been quietly skirting for a month. Cheaper and more honest than any design review I've sat through.", name: "Marcus T.", role: "UX Lead, fintech" },
   { quote: "It doesn't tell you what to do. It makes you realize you didn't actually know why you were doing it. That's the uncomfortable part. Also the useful part.", name: "Priya M.", role: "Head of Design" },
 ];
-const SAMPLE_SESSIONS = [
-  { id: 1, date: "May 18", title: "Navigation pattern decision", score: 3 },
-  { id: 2, date: "May 15", title: "Carousel vs static grid", score: 2 },
-  { id: 3, date: "May 12", title: "Modal vs inline form", score: 4 },
-  { id: 4, date: "May 9", title: "Empty state copy direction", score: 5 },
+
+const DEMO_ROUNDS = [
+  {
+    round: 1,
+    yourLabel: "Your rationale",
+    yours: "We should use a carousel here. It's a familiar pattern users already know.",
+    counter: "Familiarity isn't the same as effectiveness. Carousels are a well-documented way to hide content — most users never interact past the first frame. You've chosen a pattern users recognise, not one that serves them.",
+    action: "Defend your position →",
+  },
+  {
+    round: 2,
+    yourLabel: "Your defense",
+    yours: "We tested it with users and they said they liked the visual variety. Engagement metrics were higher.",
+    counter: "Reported preference and actual task completion diverge constantly in UX research. Higher 'engagement' with a carousel often measures confusion or accidental swipes — not satisfaction or goal achievement.",
+    action: "Push back →",
+  },
+  {
+    round: 3,
+    yourLabel: "Final defense",
+    yours: "Every major competitor in our space uses this pattern. It's an industry standard at this point.",
+    counter: "You've now cited familiarity, metrics, and convention — none of which address whether users actually achieve their goal. Industry standard means widely adopted. It has never meant validated.",
+    action: "Verdict incoming →",
+  },
 ];
 
-function Pips({ score, total = 5, size = "normal" }) {
+const SAMPLE_SESSIONS = [
+  { id: 1, date: "May 18, 2026", title: "Navigation pattern decision", score: 3, rationale: "Bottom nav over hamburger for faster access." },
+  { id: 2, date: "May 15, 2026", title: "Carousel vs static grid", score: 2, rationale: "Carousel for visual variety on homepage." },
+  { id: 3, date: "May 12, 2026", title: "Modal vs inline form", score: 4, rationale: "Modal to keep context while collecting data." },
+  { id: 4, date: "May 9, 2026", title: "Empty state copy direction", score: 5, rationale: "Actionable empty states over decorative ones." },
+];
+
+/* ── HELPERS ─────────────────────────────────────── */
+
+function DSLogo({ size = 28 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3 6 L14 14 L3 22" stroke="#918D87" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M25 6 L14 14 L25 22" stroke="#C63B15" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
+function TypewriterText({ text, startDelay = 0 }) {
+  const [displayed, setDisplayed] = useState("");
+  const [done, setDone] = useState(false);
+  useEffect(() => {
+    const start = setTimeout(() => {
+      let i = 0;
+      const interval = setInterval(() => {
+        i++;
+        setDisplayed(text.slice(0, i));
+        if (i >= text.length) { clearInterval(interval); setDone(true); }
+      }, 75);
+      return () => clearInterval(interval);
+    }, startDelay);
+    return () => clearTimeout(start);
+  }, []);
+  return <>{displayed}{!done && <span className="ds-cursor">|</span>}</>;
+}
+
+function AnimatedCounter({ text }) {
+function AnimatedCounter({ text }) {
+  const words = text.split(" ");
+  return (
+    <>
+      {words.map((word, i) => (
+        <span key={i} style={{ display: "inline", opacity: 0, animation: ("word-in 0.25s ease " + (80 + i * 38) + "ms forwards") }}>
+          {word}{i < words.length - 1 ? " " : ""}
+        </span>
+      ))}
+    </>
+  );
+}
   const w = size === "sm" ? 14 : 28, h = size === "sm" ? 3 : 5;
   return (
     <div style={{ display: "flex", gap: size === "sm" ? 3 : 5 }}>
       {Array.from({ length: total }).map((_, i) => (
-        <div key={i} style={{ width: w, height: h, background: i < score ? "var(--ink)" : "var(--border)", transition: "background 0.3s" }} />
+        <div key={i} style={{
+          width: w, height: h,
+          background: i < score ? "var(--ink)" : "var(--border)",
+          transformOrigin: "left",
+          animation: animate && i < score
+            ? ("pip-fill 0.3s ease " + (i * 90 + 150) + "ms both")
+            : ("pip-fill 0.15s ease " + (i * 30) + "ms both"),
+          transform: "scaleX(0)",
+        }} />
       ))}
     </div>
   );
+}
+
+function useScrollReveal(deps) {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const els = document.querySelectorAll(".ds-reveal");
+      if (!els.length) return;
+      const observer = new IntersectionObserver(
+        entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("ds-in-view"); observer.unobserve(e.target); } }),
+        { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
+      );
+      els.forEach(el => observer.observe(el));
+      return () => observer.disconnect();
+    }, 120);
+    return () => clearTimeout(timer);
+  }, deps);
+}
+
+function downloadSession(session) {
+  const lines = [
+    "DESIGN SPARRING — SESSION RECORD",
+    "═".repeat(44),
+    "",
+    `Title:    ${session.title}`,
+    `Date:     ${session.date}`,
+    `Score:    ${session.score} / 5`,
+    "",
+    "─".repeat(44),
+    "RATIONALE",
+    "─".repeat(44),
+    session.rationale,
+    "",
+    "─".repeat(44),
+    "NOTE",
+    "─".repeat(44),
+    "Full exchange transcript saved on paid plan.",
+    "Sign in to view complete round-by-round history.",
+    "",
+    "═".repeat(44),
+    "designsparring.vercel.app",
+  ];
+  const blob = new Blob([lines.join("\n")], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `sparring-${session.title.toLowerCase().replace(/\s+/g, "-")}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 
 async function callSpar(messages, isVerdict = false) {
@@ -271,6 +448,8 @@ async function callSpar(messages, isVerdict = false) {
   if (!res.ok) throw new Error(data.error || "Connection failed");
   return data.text;
 }
+
+/* ── SPARRING INTERFACE ──────────────────────────── */
 
 function SparringInterface({ user, onExit, onSignup }) {
   const isPaid = user?.plan === "paid";
@@ -300,13 +479,13 @@ function SparringInterface({ user, onExit, onSignup }) {
   };
 
   const startFight = async () => {
-    if (!rationale.trim() || rationale.trim().length < 15) { setError("Give the opponent something to work with. Describe your decision more fully."); return; }
+    if (!rationale.trim() || rationale.trim().length < 15) { setError("Give the opponent something to work with."); return; }
     setError(null); setLoading(true); setStatus("fighting");
     try {
       const text = await callSpar([{ role: "user", content: `Design decision: ${rationale}` }]);
       setExchanges([{ role: "counter", text, round: 1 }]);
       if (maxRounds === 1) setStatus("wall");
-    } catch { setError("Connection failed. Try again."); setStatus("input"); }
+    } catch (e) { setError(e.message || "Connection failed. Try again."); setStatus("input"); }
     finally { setLoading(false); }
   };
 
@@ -320,8 +499,8 @@ function SparringInterface({ user, onExit, onSignup }) {
       if (nextRound >= maxRounds) {
         const counterText = await callSpar(msgs);
         const finalExchanges = [...newExchanges, { role: "counter", text: counterText, round: nextRound + 1 }];
-        setExchanges(finalExchanges); setLoading(true);
-        const verdictMsgs = [{ role: "user", content: `Design sparring session verdict needed.\n\nDesigner rationale: ${rationale}\n\n${finalExchanges.map(e => `${e.role === "counter" ? "Counter" : "Designer"} (Round ${e.round}): ${e.text}`).join("\n\n")}` }];
+        setExchanges(finalExchanges);
+        const verdictMsgs = [{ role: "user", content: `Design sparring session:\n\nRationale: ${rationale}\n\n${finalExchanges.map(e => `${e.role === "counter" ? "Counter" : "Designer"} (Round ${e.round}): ${e.text}`).join("\n\n")}` }];
         const verdictRaw = await callSpar(verdictMsgs, true);
         try { setVerdict(JSON.parse(verdictRaw.replace(/```json|```/g, "").trim())); setStatus("verdict"); }
         catch { setError("Verdict parsing failed."); setStatus("verdict"); }
@@ -329,7 +508,7 @@ function SparringInterface({ user, onExit, onSignup }) {
         const text = await callSpar(msgs);
         setExchanges(prev => [...prev, { role: "counter", text, round: nextRound + 1 }]);
       }
-    } catch { setError("Connection failed. Try again."); }
+    } catch (e) { setError(e.message || "Connection failed."); }
     finally { setLoading(false); }
   };
 
@@ -359,24 +538,17 @@ function SparringInterface({ user, onExit, onSignup }) {
       {(status === "fighting" || status === "wall" || status === "verdict") && (
         <>
           <div className="spar-thread">
-            <div className="spar-turn">
-              <span className="spar-turn-lbl">Your rationale</span>
-              <p className="spar-turn-text spar-turn-text-user">"{rationale}"</p>
-            </div>
+            <div className="spar-turn"><span className="spar-turn-lbl">Your rationale</span><p className="spar-turn-text spar-turn-text-user">"{rationale}"</p></div>
             {exchanges.map((ex, i) => (
               <div className="spar-turn" key={i}>
-                {ex.role === "counter" ? (
-                  <><span className="spar-turn-lbl spar-turn-lbl-counter">The Counter — Round {ex.round}</span><div className="spar-counter-body"><p className="spar-turn-text spar-turn-text-counter">{ex.text}</p></div></>
-                ) : (
-                  <><span className="spar-turn-lbl">Your defense — Round {ex.round}</span><p className="spar-turn-text spar-turn-text-user">"{ex.text}"</p></>
-                )}
+                {ex.role === "counter"
+                  ? <><span className="spar-turn-lbl spar-turn-lbl-counter">The Counter — Round {ex.round}</span><div className="spar-counter-body" key={ex.text}><p className="spar-turn-text spar-turn-text-counter"><AnimatedCounter text={ex.text} /></p></div></>
+                  : <><span className="spar-turn-lbl">Your defense — Round {ex.round}</span><p className="spar-turn-text spar-turn-text-user">"{ex.text}"</p></>}
               </div>
             ))}
           </div>
-
-          {loading && <div className="spar-loading"><div className="spar-loading-dots"><div className="spar-loading-dot" /><div className="spar-loading-dot" /><div className="spar-loading-dot" /></div><span className="spar-loading-text">{roundsDone >= maxRounds ? "Calculating verdict..." : "Building counter..."}</span></div>}
+          {loading && <div className="spar-loading"><div className="spar-loading-dots"><div className="spar-loading-dot"/><div className="spar-loading-dot"/><div className="spar-loading-dot"/></div><span className="spar-loading-text">{roundsDone >= maxRounds ? "Calculating verdict..." : "Building counter..."}</span></div>}
           {error && <div className="spar-error"><p className="spar-error-text">{error}</p></div>}
-
           {!loading && status === "fighting" && roundsDone < maxRounds && exchanges[exchanges.length - 1]?.role === "counter" && (
             <div className="spar-defense">
               <span className="spar-defense-lbl">{roundsDone < maxRounds - 1 ? `Defend your position — Round ${roundsDone + 1}` : `Final defense — Round ${roundsDone + 1}`}</span>
@@ -384,24 +556,19 @@ function SparringInterface({ user, onExit, onSignup }) {
               <div className="spar-submit-row"><button className="ds-btn-primary" onClick={submitDefense} disabled={!defenseInput.trim()}>{roundsDone < maxRounds - 1 ? "Push back →" : "Final answer →"}</button></div>
             </div>
           )}
-
           {status === "wall" && (
             <div className="spar-wall">
               <h3 className="spar-wall-title">Round 1 complete.</h3>
               <p className="spar-wall-sub">The free tier stops here. Upgrade to Sparring Partner for two more rounds and a scored verdict.</p>
-              <div className="spar-wall-ctas">
-                <button className="ds-btn-primary" onClick={onSignup}>Upgrade — $9/mo</button>
-                <button className="ds-btn-outline" onClick={onExit}>End session</button>
-              </div>
+              <div className="spar-wall-ctas"><button className="ds-btn-primary" onClick={onSignup}>Upgrade — $9/mo</button><button className="ds-btn-outline" onClick={onExit}>End session</button></div>
             </div>
           )}
-
           {status === "verdict" && verdict && (
             <div className="spar-verdict">
               <div className="spar-verdict-header"><h3 className="spar-verdict-title">The Verdict</h3><p className="spar-verdict-sub">After three rounds, here's how your argument held up.</p></div>
               <div className="spar-verdict-scores">
                 {[{ label: "Clarity", score: verdict.clarity }, { label: "User impact", score: verdict.userImpact }, { label: "Defensibility", score: verdict.defensibility }].map(s => (
-                  <div className="spar-verdict-row" key={s.label}><span className="spar-verdict-lbl">{s.label}</span><Pips score={s.score} total={5} /></div>
+                  <div className="spar-verdict-row" key={s.label}><span className="spar-verdict-lbl">{s.label}</span><Pips score={s.score} total={5} animate={true} /></div>
                 ))}
               </div>
               {verdict.blindSpots?.length > 0 && <div style={{ marginBottom: 24 }}><div className="spar-blind-title">Blind spots</div>{verdict.blindSpots.map((b, i) => <p className="spar-blind-item" key={i}>{b}</p>)}</div>}
@@ -419,19 +586,23 @@ function SparringInterface({ user, onExit, onSignup }) {
   );
 }
 
+/* ── LEGAL ───────────────────────────────────────── */
+
 function LegalPage({ page, onBack, goPage }) {
   useEffect(() => { window.scrollTo(0, 0); }, [page]);
   return (
     <div className="ds-legal">
       <button className="ds-back-btn" onClick={onBack}>← Back</button>
-      {page === "privacy" && <><h1 className="ds-legal-title">Privacy Policy</h1><span className="ds-legal-date">Effective date: May 2026</span><h2>What this is</h2><p>Design Sparring collects the minimum information necessary to provide the service. This policy explains what we collect, why, and what you can do about it.</p><h2>What we collect</h2><p>We collect your email address when you create an account, used solely for authentication via magic links. On the paid tier, we store your sparring session data for up to 30 days. On the free tier, no session data is retained.</p><h2>How we use your data</h2><ul><li>To send you a magic link for authentication</li><li>To associate your sessions with your account (paid tier only)</li><li>To process payments securely through our payment provider</li></ul><h2>Data retention</h2><p>Your account is retained until you delete it. Paid-tier session data is deleted automatically after 30 days. You can delete your account at any time from the account menu.</p><h2>Third parties</h2><p>We use a transactional email provider for magic links and a third-party payment processor for paid accounts. We do not sell, rent, or share your data. We do not use advertising networks or tracking pixels.</p><hr className="ds-legal-rule" /><h2>Contact</h2><p><a href="mailto:privacy@designsparring.com">privacy@designsparring.com</a></p></>}
-      {page === "terms" && <><h1 className="ds-legal-title">Terms of Service</h1><span className="ds-legal-date">Effective date: May 2026</span><h2>Acceptance</h2><p>By creating an account or using Design Sparring, you agree to these terms.</p><h2>What the service is</h2><p>Design Sparring provides AI-generated counter-arguments and structured scoring for design decisions you submit. It is a decision-support tool, not professional advice. The AI opponent is intentionally adversarial — that's the point.</p><h2>Accounts</h2><p>You must be at least 16 years old to create an account. The free tier does not require an account.</p><h2>Free tier</h2><p>Up to 3 sessions per day, 1 round each, no account required. No session data is retained.</p><h2>Paid tier and billing</h2><p>Paid subscriptions are billed monthly. Cancel anytime — takes effect at end of billing period. No refunds for partial months.</p><h2>Acceptable use</h2><p>You agree not to submit illegal or harmful content, or attempt to abuse the service in ways that degrade performance for others.</p><h2>Your content</h2><p>You retain ownership of content you submit. We do not use it to train AI models or share it with third parties.</p><h2>Disclaimers</h2><p>Design Sparring is provided "as is." AI counter-arguments are intentionally one-sided. Do not make irreversible decisions based solely on output from this tool.</p><h2>Contact</h2><p><a href="mailto:legal@designsparring.com">legal@designsparring.com</a></p></>}
+      {page === "privacy" && <><h1 className="ds-legal-title">Privacy Policy</h1><span className="ds-legal-date">Effective date: May 2026</span><h2>What this is</h2><p>Design Sparring collects the minimum information necessary to provide the service.</p><h2>What we collect</h2><p>We collect your email address when you create an account, used solely for authentication via magic links. We store your sparring session data for up to 30 days on the paid tier.</p><h2>How we use your data</h2><ul><li>To send you a magic link for authentication</li><li>To associate your sessions with your account</li><li>To process payments securely through our payment provider</li></ul><h2>Data retention</h2><p>Your account is retained until you delete it. Session data is deleted automatically after 30 days. You can delete your account at any time from the account menu.</p><h2>Third parties</h2><p>We use a transactional email provider for magic links and a third-party payment processor. We do not sell, rent, or share your data. No advertising networks. No tracking pixels.</p><hr className="ds-legal-rule"/><h2>Contact</h2><p><a href="mailto:privacy@designsparring.com">privacy@designsparring.com</a></p></>}
+      {page === "terms" && <><h1 className="ds-legal-title">Terms of Service</h1><span className="ds-legal-date">Effective date: May 2026</span><h2>Acceptance</h2><p>By creating an account or using Design Sparring, you agree to these terms.</p><h2>What the service is</h2><p>Design Sparring provides AI-generated counter-arguments and structured scoring for design decisions. It is a decision-support tool, not professional advice. The AI opponent is intentionally adversarial.</p><h2>Accounts and billing</h2><p>Accounts are available on the paid plan only ($9/month). You must be at least 16 years old. Subscriptions are billed monthly. Cancel anytime — takes effect at end of billing period. No refunds for partial months.</p><h2>Free tier</h2><p>The free tier (1 round, no account) is available without registration. No session data is retained.</p><h2>Acceptable use</h2><p>You agree not to submit illegal or harmful content, or attempt to abuse the service in ways that degrade performance for others.</p><h2>Your content</h2><p>You retain ownership of content you submit. We do not use it to train AI models or share it with third parties.</p><h2>Contact</h2><p><a href="mailto:legal@designsparring.com">legal@designsparring.com</a></p></>}
       {page === "cookies" && <><h1 className="ds-legal-title">Cookie Policy</h1><span className="ds-legal-date">Effective date: May 2026</span><h2>What we use</h2><p>Design Sparring uses only essential cookies — no advertising, no cross-site tracking.</p><ul><li><strong>Session cookie</strong> — Keeps you authenticated. Expires when you sign out.</li><li><strong>CSRF token</strong> — Security cookie protecting against cross-site request forgery.</li><li><strong>Cookie consent</strong> — Stores your preference so we don't ask again.</li></ul><h2>What we don't use</h2><p>No advertising cookies. No third-party analytics. No fingerprinting.</p><h2>Contact</h2><p><a href="mailto:privacy@designsparring.com">privacy@designsparring.com</a></p></>}
     </div>
   );
 }
 
-export default function LandingPage({ user: initialUser }) {
+/* ── MAIN ────────────────────────────────────────── */
+
+export default function LandingPage({ user: initialUser, authStatus }) {
   const [user, setUser] = useState(initialUser || null);
   const [modal, setModal] = useState(null);
   const [email, setEmail] = useState("");
@@ -441,6 +612,8 @@ export default function LandingPage({ user: initialUser }) {
   const [toast, setToast] = useState(null);
   const [page, setPage] = useState("home");
   const [cookiesAccepted, setCookiesAccepted] = useState(false);
+  const [activeRound, setActiveRound] = useState(0);
+  const router = useRouter();
 
   useEffect(() => {
     const link = document.createElement("link"); link.rel = "stylesheet"; link.href = FONTS;
@@ -450,6 +623,31 @@ export default function LandingPage({ user: initialUser }) {
     return () => { document.head.removeChild(link); document.head.removeChild(style); };
   }, []);
 
+  // Auto-rotate carousel
+  useEffect(() => {
+    const interval = setInterval(() => setActiveRound(r => (r + 1) % 3), 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Handle auth redirect status
+  useEffect(() => {
+    if (!authStatus) return;
+    if (authStatus === "success") {
+      // Cookie was just set — refresh server session then clean URL
+      router.refresh();
+      window.history.replaceState({}, "", "/");
+    } else if (authStatus === "expired") {
+      setModal("auth-expired");
+      window.history.replaceState({}, "", "/");
+    } else if (authStatus === "invalid" || authStatus === "error") {
+      showToast("Something went wrong. Please try signing in again.");
+      window.history.replaceState({}, "", "/");
+    }
+  }, [authStatus]);
+
+  // Scroll reveal
+  useScrollReveal([page]);
+
   const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 3000); };
   const openModal = (t) => { setModal(t); setEmail(""); setAuthStep("form"); setDeleteStep(false); setAcctOpen(false); };
   const closeModal = () => { setModal(null); setEmail(""); setAuthStep("form"); setDeleteStep(false); };
@@ -457,11 +655,9 @@ export default function LandingPage({ user: initialUser }) {
 
   const handleAuth = async () => {
     if (!email.trim() || !email.includes("@")) return;
-    if (modal === "signup" || modal === "login") {
-      const res = await fetch("/api/auth/send-link", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
-      if (res.ok) setAuthStep("sent");
-      else showToast("Something went wrong. Try again.");
-    }
+    const res = await fetch("/api/auth/send-link", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
+    if (res.ok) setAuthStep("sent");
+    else showToast("Something went wrong. Try again.");
   };
 
   const handleLogout = async () => {
@@ -473,7 +669,14 @@ export default function LandingPage({ user: initialUser }) {
     const res = await fetch("/api/stripe/checkout", { method: "POST" });
     const data = await res.json();
     if (data.url) window.location.href = data.url;
-    else showToast("Something went wrong.");
+    else showToast("Something went wrong. Try again.");
+  };
+
+  const handleCancelSub = async () => {
+    const res = await fetch("/api/stripe/portal", { method: "POST" });
+    const data = await res.json();
+    if (data.url) window.location.href = data.url;
+    else showToast("Something went wrong. Try again.");
   };
 
   const handleDelete = async () => {
@@ -482,21 +685,35 @@ export default function LandingPage({ user: initialUser }) {
     if (res.ok) { setUser(null); closeModal(); showToast("Account deleted."); }
   };
 
+  const currentRound = DEMO_ROUNDS[activeRound];
+
   return (
     <div className="ds" onClick={() => acctOpen && setAcctOpen(false)}>
+
+      {/* NAV */}
       <nav className="ds-nav">
-        <span className="ds-logo" onClick={() => goPage("home")}>Design Sparring</span>
+        <div className="ds-logo-wrap" onClick={() => goPage("home")}>
+          <DSLogo size={26} />
+          <span className="ds-logo">Design Sparring</span>
+        </div>
         <div>
           {user ? (
             <div className="ds-account-wrap" onClick={e => e.stopPropagation()}>
-              <button className="ds-account-btn" onClick={() => setAcctOpen(!acctOpen)}><span className="ds-dot" /> Your account</button>
+              <button className="ds-account-btn" onClick={() => setAcctOpen(!acctOpen)}>
+                <div className="ds-avatar">{user.email[0].toUpperCase()}</div>
+                Your account
+              </button>
               {acctOpen && (
                 <div className="ds-dropdown">
-                  <div className="ds-dropdown-meta"><span className={`ds-tag${user.plan === "paid" ? " ds-tag-paid" : ""}`}>{user.plan === "paid" ? "Sparring Partner" : "Free plan"}</span>{user.plan === "free" && <button className="ds-acct-upgrade-btn" onClick={handleUpgrade}>Upgrade</button>}</div>
-                  {user.plan === "paid" && <button className="ds-dropdown-item" onClick={() => { setAcctOpen(false); openModal("history"); }}>Session history</button>}
+                  <div className="ds-dropdown-meta">
+                    <span className="ds-dropdown-email">{user.email}</span>
+                    <span className="ds-tag">Sparring Partner</span>
+                  </div>
+                  <button className="ds-dropdown-item" onClick={() => { setAcctOpen(false); openModal("history"); }}>Session history</button>
                   <div className="ds-dropdown-divider" />
+                  <button className="ds-dropdown-item" onClick={handleCancelSub}>Cancel subscription</button>
                   <button className="ds-dropdown-item" onClick={handleLogout}>Sign out</button>
-                  <button className="ds-dropdown-item ds-danger-item" onClick={() => openModal("delete")}>Delete account</button>
+                  <button className="ds-dropdown-item ds-danger-item" onClick={() => { setAcctOpen(false); openModal("delete"); }}>Delete account</button>
                 </div>
               )}
             </div>
@@ -509,15 +726,19 @@ export default function LandingPage({ user: initialUser }) {
         </div>
       </nav>
 
+      {/* ROUTES */}
       {page === "spar" && <SparringInterface user={user} onExit={() => goPage("home")} onSignup={() => { goPage("home"); openModal("signup"); }} />}
       {["privacy","terms","cookies"].includes(page) && <LegalPage page={page} onBack={() => goPage("home")} goPage={goPage} />}
 
+      {/* HOME */}
       {page === "home" && <>
+
+        {/* HERO */}
         <section className="ds-hero">
           <div className="ds-hero-inner">
             <div>
               <span className="ds-eyebrow">Design Decision Tool</span>
-              <h1 className="ds-h1">Your design<br />decisions deserve<br /><em>a fight.</em></h1>
+              <h1 className="ds-h1">Your design<br />decisions deserve<br /><em><TypewriterText text="a fight." startDelay={950} /></em></h1>
               <p className="ds-hero-sub">Paste your design rationale. Get a structured counter-argument.<br />Three rounds. A scored verdict. No encouragement.</p>
               <div className="ds-hero-ctas">
                 <button className="ds-btn-primary" onClick={() => goPage("spar")}>Start sparring free</button>
@@ -525,55 +746,87 @@ export default function LandingPage({ user: initialUser }) {
               </div>
               <p className="ds-hero-free-note">Free tier — no account required</p>
             </div>
-            <div className="ds-card-mockup">
-              <div className="ds-card-top"><div className="ds-card-lbl">Your rationale — Round 01</div><div className="ds-card-rounds"><div className="ds-card-round-pip ds-card-round-pip-on" /><div className="ds-card-round-pip" /><div className="ds-card-round-pip" /></div></div>
-              <div className="ds-card-txt ds-card-yours">"We should use a carousel here. It's a familiar pattern users already know."</div>
-              <hr className="ds-card-hr" />
-              <div className="ds-card-lbl ds-card-lbl-vs">The Counter</div>
-              <div className="ds-card-txt ds-card-counter">Familiarity isn't the same as effectiveness. Carousels are a well-documented way to hide content — most users never interact past the first frame. You've chosen a pattern users recognise, not one that serves them.</div>
-              <div className="ds-card-foot"><span className="ds-round-lbl">Round 01 / 03</span><span className="ds-defend-lbl">Defend your position →</span></div>
+
+            {/* CAROUSEL */}
+            <div className="ds-carousel">
+              <div className="ds-carousel-card" key={activeRound}>
+                <div className="ds-card-top">
+                  <div className="ds-card-lbl">{currentRound.yourLabel} — Round 0{currentRound.round}</div>
+                  <div className="ds-card-rounds">
+                    {[0,1,2].map(i => <div key={i} className={`ds-card-round-pip${i === activeRound ? " ds-card-round-pip-on" : ""}`} />)}
+                  </div>
+                </div>
+                <div className="ds-card-txt ds-card-yours">"{currentRound.yours}"</div>
+                <hr className="ds-card-hr" />
+                <div className="ds-card-lbl ds-card-lbl-vs">The Counter</div>
+                <div className="ds-card-txt ds-card-counter">{currentRound.counter}</div>
+                <div className="ds-card-foot">
+                  <span className="ds-round-lbl">Round 0{currentRound.round} / 03</span>
+                  <span className="ds-defend-lbl">{currentRound.action}</span>
+                </div>
+              </div>
+              <div className="ds-carousel-dots">
+                {[0,1,2].map(i => (
+                  <button key={i} className={`ds-carousel-dot${i === activeRound ? " ds-carousel-dot-on" : ""}`} onClick={() => setActiveRound(i)} />
+                ))}
+              </div>
             </div>
           </div>
           <div className="ds-hero-rule" />
         </section>
 
+        {/* HOW IT WORKS */}
         <section className="ds-section" id="how-it-works">
           <div className="ds-section-inner">
-            <span className="ds-section-lbl">The process</span>
-            <div className="ds-steps">{STEPS.map(s => <div key={s.n}><div className="ds-step-num">{s.n}</div><h3 className="ds-step-title">{s.title}</h3><p className="ds-step-body">{s.body}</p></div>)}</div>
+            <span className="ds-section-lbl ds-reveal">The process</span>
+            <div className="ds-steps">{STEPS.map((s, idx) => <div key={s.n} className={`ds-reveal ds-reveal-d${idx + 1}`}><div className="ds-step-num">{s.n}</div><h3 className="ds-step-title">{s.title}</h3><p className="ds-step-body">{s.body}</p></div>)}</div>
           </div>
         </section>
 
+        {/* VERDICT PREVIEW */}
         <section className="ds-section ds-verdict-section">
           <div className="ds-section-inner">
-            <span className="ds-section-lbl">The verdict</span>
-            <h2 className="ds-h2">Four dimensions.<br />No softening.</h2>
-            <div className="ds-scores">{SCORES_PREVIEW.map(s => <div className="ds-score-row" key={s.label}><div className="ds-score-meta"><span className="ds-score-lbl">{s.label}</span><span className="ds-score-note">{s.note}</span></div>{s.score !== null ? <Pips score={s.score} /> : <span className="ds-score-flag">⚑ Flagged</span>}</div>)}</div>
+            <span className="ds-section-lbl ds-reveal">The verdict</span>
+            <h2 className="ds-h2 ds-reveal ds-reveal-d1">Four dimensions.<br />No softening.</h2>
+            <div className="ds-scores">{SCORES_PREVIEW.map((s, idx) => (
+              <div className="ds-score-row ds-reveal" key={s.label}>
+                <div className="ds-score-meta"><span className="ds-score-lbl">{s.label}</span><span className="ds-score-note">{s.note}</span></div>
+                {s.score !== null ? <Pips score={s.score} /> : <span className="ds-score-flag">⚑ Flagged</span>}
+              </div>
+            ))}</div>
           </div>
         </section>
 
+        {/* TESTIMONIALS */}
         <section className="ds-section">
           <div className="ds-section-inner">
-            <span className="ds-section-lbl">In the field</span>
-            <div className="ds-testi-grid">{TESTIMONIALS.map((t, i) => <div className="ds-testi" key={i}><div className="ds-testi-mark">"</div><p className="ds-testi-quote">{t.quote}</p><div className="ds-testi-author"><span className="ds-testi-name">{t.name}</span><span className="ds-testi-role">{t.role}</span></div></div>)}</div>
+            <span className="ds-section-lbl ds-reveal">In the field</span>
+            <div className="ds-testi-grid">{TESTIMONIALS.map((t, i) => (
+              <div className={`ds-testi ds-reveal ds-reveal-d${i + 1}`} key={i}>
+                <div className="ds-testi-mark">"</div>
+                <p className="ds-testi-quote">{t.quote}</p>
+                <div className="ds-testi-author"><span className="ds-testi-name">{t.name}</span><span className="ds-testi-role">{t.role}</span></div>
+              </div>
+            ))}</div>
           </div>
         </section>
 
+        {/* PRICING */}
         <section className="ds-section" id="pricing" style={{ background: "var(--surface)", borderTop: "1px solid var(--border)" }}>
           <div className="ds-section-inner">
             <span className="ds-section-lbl">Pricing</span>
             <div className="ds-pricing">
-              <div className="ds-plan">
+              <div className="ds-plan ds-reveal ds-reveal-d1">
                 <div className="ds-plan-head"><h3 className="ds-plan-name">Challenger</h3><span className="ds-plan-price">Free</span></div>
                 <p className="ds-plan-desc">Try the sparring. No account needed.</p>
                 <ul className="ds-plan-list"><li>3 sessions per day</li><li>1 round per session</li><li>No sign-in required</li><li>No session memory</li><li>No verdict scoring</li></ul>
                 <p className="ds-plan-note">No account required</p>
                 <button className="ds-btn-outline" onClick={() => goPage("spar")}>Start sparring free</button>
               </div>
-              <div className="ds-plan ds-plan-dark">
+              <div className="ds-plan ds-plan-dark ds-reveal ds-reveal-d2">
                 <div className="ds-plan-head"><h3 className="ds-plan-name">Sparring Partner</h3><span className="ds-plan-price">$9<span className="ds-plan-per">/mo</span></span></div>
                 <p className="ds-plan-desc">The full fight, saved for 30 days.</p>
-                <ul className="ds-plan-list"><li>Unlimited sessions</li><li>Full 3-round format</li><li>30-day session history</li><li>Scored verdict on every session</li></ul>
+                <ul className="ds-plan-list"><li>Unlimited sessions</li><li>Full 3-round format</li><li>30-day session history</li><li>Scored verdict on every session</li><li>Download session records</li></ul>
                 <p className="ds-plan-note">Account required</p>
                 <button className="ds-btn-primary" onClick={() => openModal("signup")}>Get full access</button>
               </div>
@@ -582,12 +835,17 @@ export default function LandingPage({ user: initialUser }) {
         </section>
       </>}
 
+      {/* FOOTER */}
       <footer className="ds-footer">
-        <span className="ds-logo" onClick={() => goPage("home")}>Design Sparring</span>
+        <div className="ds-logo-wrap" onClick={() => goPage("home")}>
+          <DSLogo size={22} />
+          <span className="ds-logo">Design Sparring</span>
+        </div>
         <div className="ds-footer-links"><button onClick={() => goPage("privacy")}>Privacy</button><button onClick={() => goPage("terms")}>Terms</button><button onClick={() => goPage("cookies")}>Cookies</button></div>
         <span className="ds-footer-copy">© 2026</span>
       </footer>
 
+      {/* COOKIE BANNER */}
       {!cookiesAccepted && (
         <div className="ds-cookie">
           <p className="ds-cookie-text">We use essential cookies for authentication only — no tracking, no advertising. <button onClick={() => goPage("cookies")}>Learn more</button></p>
@@ -595,33 +853,60 @@ export default function LandingPage({ user: initialUser }) {
         </div>
       )}
 
+      {/* MODALS */}
       {modal && (
         <div className="ds-overlay" onClick={closeModal}>
           <div className="ds-modal" onClick={e => e.stopPropagation()}>
             <button className="ds-modal-x" onClick={closeModal}>✕</button>
+
             {(modal === "login" || modal === "signup") && authStep === "form" && <>
               <h2 className="ds-modal-title">{modal === "login" ? "Sign in" : "Create account"}</h2>
-              <p className="ds-modal-sub">{modal === "login" ? "Enter your email. We'll send a link." : "No password. Just an email."}</p>
+              <p className="ds-modal-sub">{modal === "login" ? "Enter your email. We'll send a sign-in link." : "Sparring Partner plan — $9/mo. Enter your email to get started."}</p>
               <input className="ds-input" type="email" placeholder="you@example.com" value={email} onChange={e => setEmail(e.target.value)} onKeyDown={e => e.key === "Enter" && handleAuth()} autoFocus />
-              <button className="ds-btn-primary ds-btn-full" onClick={handleAuth}>{modal === "login" ? "Continue" : "Create account"}</button>
+              <button className="ds-btn-primary ds-btn-full" onClick={handleAuth}>{modal === "login" ? "Send link" : "Continue to payment →"}</button>
               <p className="ds-modal-switch">{modal === "login" ? <>New here? <button className="ds-text-btn" onClick={() => openModal("signup")}>Create an account</button></> : <>Already have one? <button className="ds-text-btn" onClick={() => openModal("login")}>Sign in</button></>}</p>
             </>}
+
             {(modal === "login" || modal === "signup") && authStep === "sent" && <>
               <h2 className="ds-modal-title">Check your email</h2>
-              <p className="ds-modal-sub">A link is on its way to <strong>{email}</strong></p>
-              <p style={{ fontSize: 14, color: "var(--muted)", fontWeight: 400 }}>Click the link in your email to sign in. It expires in 15 minutes.</p>
+              <p className="ds-modal-sub">A sign-in link is on its way to <strong>{email}</strong><br />It expires in 15 minutes.</p>
+              <p style={{ fontSize: 13, color: "var(--muted)", fontWeight: 400, lineHeight: 1.7 }}>
+                {modal === "signup" ? "After clicking the link, you'll be directed to complete your Sparring Partner subscription." : "Click the link to sign back in."}
+              </p>
             </>}
+
             {modal === "history" && <>
               <h2 className="ds-modal-title">Session history</h2>
-              <div className="ds-acct-plan"><span className="ds-acct-plan-label ds-acct-plan-paid">Sparring Partner</span><span style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--muted)" }}>30-day window</span></div>
-              <div className="ds-session-lbl">Recent sessions</div>
-              <div className="ds-session-list">{SAMPLE_SESSIONS.map(s => <div className="ds-session-row" key={s.id}><div className="ds-session-info"><span className="ds-session-title">{s.title}</span><span className="ds-session-date">{s.date}</span></div><Pips score={s.score} size="sm" /></div>)}</div>
-              <div className="ds-acct-danger-zone"><button className="ds-dropdown-item ds-danger-item" style={{ padding: "10px 0" }} onClick={() => { closeModal(); openModal("delete"); }}>Delete account</button></div>
+              <p className="ds-modal-sub" style={{ marginBottom: 20 }}>Last 30 days. Click download for a full session record.</p>
+              <div className="ds-history-lbl">Recent sessions</div>
+              <div className="ds-history-list">
+                {SAMPLE_SESSIONS.map(s => (
+                  <div className="ds-history-row" key={s.id}>
+                    <div className="ds-history-info">
+                      <span className="ds-history-title">{s.title}</span>
+                      <span className="ds-history-date">{s.date}</span>
+                    </div>
+                    <div className="ds-history-right">
+                      <Pips score={s.score} size="sm" />
+                      <button className="ds-download-btn" onClick={() => downloadSession(s)}>↓ Save</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </>}
+
             {modal === "delete" && <>
               <h2 className="ds-modal-title">Delete account</h2>
-              <p className="ds-modal-sub">{deleteStep ? "This will permanently erase your account and all sessions. There is no undo." : "Your account and all saved sessions will be permanently removed."}</p>
-              {!deleteStep ? <button className="ds-btn-danger" onClick={handleDelete}>Delete my account</button> : <div className="ds-delete-stack"><button className="ds-btn-danger" onClick={handleDelete}>Yes, delete permanently</button><button className="ds-btn-outline ds-btn-full" onClick={closeModal}>Cancel</button></div>}
+              <p className="ds-modal-sub">{deleteStep ? "This will permanently erase your account, all sessions, and cancel your subscription. There is no undo." : "Your account, all saved sessions, and your subscription will be permanently removed."}</p>
+              {!deleteStep
+                ? <button className="ds-btn-danger" onClick={handleDelete}>Delete my account</button>
+                : <div className="ds-delete-stack"><button className="ds-btn-danger" onClick={handleDelete}>Yes, delete permanently</button><button className="ds-btn-outline ds-btn-full" onClick={closeModal}>Cancel</button></div>}
+            </>}
+
+            {modal === "auth-expired" && <>
+              <h2 className="ds-modal-title">Link expired</h2>
+              <p className="ds-modal-sub">This sign-in link is no longer active. Links expire after 15 minutes and can only be used once.</p>
+              <button className="ds-btn-primary ds-btn-full" onClick={() => { closeModal(); openModal("login"); }}>Request a new link</button>
             </>}
           </div>
         </div>

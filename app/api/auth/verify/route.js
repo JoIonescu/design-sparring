@@ -4,37 +4,42 @@ import { consumeMagicToken } from '@/lib/kv'
 import { signToken, setSessionCookie } from '@/lib/auth'
 
 export async function GET(request) {
+  const appUrl = process.env.NEXT_PUBLIC_URL || 'https://design-sparring.vercel.app'
   const { searchParams } = new URL(request.url)
   const token = searchParams.get('token')
 
   if (!token) {
-    return NextResponse.redirect(new URL('/?auth=invalid', request.url))
+    return NextResponse.redirect(`${appUrl}/?auth=invalid`)
   }
 
-  const email = await consumeMagicToken(token)
+  try {
+    const email = await consumeMagicToken(token)
 
-  if (!email) {
-    // Token expired or already used
-    return NextResponse.redirect(new URL('/?auth=expired', request.url))
+    if (!email) {
+      // Token expired or already used
+      return NextResponse.redirect(`${appUrl}/?auth=expired`)
+    }
+
+    const [user] = await sql`
+      SELECT id, email, plan FROM users WHERE email = ${email}
+    `
+
+    if (!user) {
+      return NextResponse.redirect(`${appUrl}/?auth=error`)
+    }
+
+    const jwt = await signToken({
+      sub: user.id,
+      email: user.email,
+      plan: user.plan,
+    })
+
+    const response = NextResponse.redirect(`${appUrl}/?auth=success`)
+    setSessionCookie(response, jwt)
+    return response
+
+  } catch (error) {
+    console.error('verify error:', error)
+    return NextResponse.redirect(`${appUrl}/?auth=error`)
   }
-
-  // Get the user
-  const [user] = await sql`
-    SELECT id, email, plan FROM users WHERE email = ${email}
-  `
-
-  if (!user) {
-    return NextResponse.redirect(new URL('/?auth=error', request.url))
-  }
-
-  // Sign a JWT
-  const jwt = await signToken({
-    sub: user.id,
-    email: user.email,
-    plan: user.plan,
-  })
-
-  const response = NextResponse.redirect(new URL('/', request.url))
-  setSessionCookie(response, jwt)
-  return response
 }
