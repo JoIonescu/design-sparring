@@ -8,18 +8,6 @@ Stress-test your design decisions. Three rounds. A scored verdict. No encouragem
 
 ---
 
-## Stack
-
-- **Next.js 14** (App Router)
-- **Vercel** — hosting + KV (Upstash Redis)
-- **Neon** — Postgres database
-- **Resend** — transactional email (magic links)
-- **Stripe** — subscriptions ($9/mo)
-- **Anthropic** — Claude API (sparring + verdicts)
-
----
-
-
 ## Project structure
 
 ```
