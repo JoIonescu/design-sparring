@@ -16,8 +16,8 @@ body { background: var(--bg); }
 .ds {
   font-family: var(--sans); color: var(--ink); min-height: 100vh; font-size: 16px; line-height: 1.6;
   background-color: var(--bg);
-  background-image: radial-gradient(circle at 1px 1px, rgba(26,23,20,0.045) 1px, transparent 0);
-  background-size: 28px 28px;
+  background-image: radial-gradient(circle, rgba(26,23,20,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
 }
 
 button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
@@ -34,11 +34,11 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .ds-account-wrap { position: relative; }
 .ds-account-btn { display: flex; align-items: center; gap: 10px; background: none; border: 1px solid var(--border); cursor: pointer; font-family: var(--sans); font-size: 13px; color: var(--ink); padding: 7px 14px; transition: border-color 0.2s; }
 .ds-account-btn:hover { border-color: var(--ink); }
-.ds-avatar { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: white; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; font-family: var(--mono); flex-shrink: 0; }
+.ds-avatar { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: white; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; font-family: var(--mono); flex-shrink: 0; }
 .ds-dropdown { position: absolute; right: 0; top: calc(100% + 8px); background: var(--bg); border: 1px solid var(--border); min-width: 220px; z-index: 200; padding: 8px 0; box-shadow: 0 4px 24px rgba(0,0,0,0.1); }
 .ds-dropdown-meta { padding: 10px 16px 12px; border-bottom: 1px solid var(--border); margin-bottom: 4px; }
 .ds-dropdown-email { font-size: 12px; color: var(--muted); display: block; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ds-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+.ds-tag { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
 .ds-dropdown-item { display: block; width: 100%; text-align: left; background: none; border: none; padding: 10px 16px; font-family: var(--sans); font-size: 14px; color: var(--ink); cursor: pointer; transition: background 0.15s; }
 .ds-dropdown-item:hover { background: var(--surface); }
 .ds-dropdown-divider { border: none; border-top: 1px solid var(--border); margin: 4px 0; }
@@ -47,13 +47,15 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 /* SOCIAL PROOF BAR */
 .ds-proof { background: var(--ink); padding: 22px 48px; display: flex; justify-content: center; gap: 72px; flex-wrap: wrap; }
 .ds-proof-item { display: flex; flex-direction: column; align-items: center; gap: 5px; }
-.ds-proof-num { font-family: var(--mono); font-size: 22px; color: var(--bg); letter-spacing: -0.02em; font-weight: 400; }
+.ds-proof-num { font-family: var(--mono); font-size: 48px; color: var(--accent); letter-spacing: -0.03em; font-weight: 400; line-height: 1; }
+.ds-proof-special { font-family: var(--mono); font-size: 32px; color: var(--accent); letter-spacing: -0.02em; font-weight: 400; line-height: 1; animation: proof-pop 0.6s cubic-bezier(0.34,1.56,0.64,1) both; }
+@keyframes proof-pop { from { opacity: 0; transform: scale(0.4); } to { opacity: 1; transform: scale(1); } }
 .ds-proof-label { font-family: var(--sans); font-size: 12px; color: rgba(249,247,242,0.5); font-weight: 300; text-align: center; max-width: 160px; line-height: 1.4; }
 
 /* HERO */
 .ds-hero { padding: 88px 48px 80px; }
 .ds-hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; max-width: 1100px; margin: 0 auto; }
-.ds-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 28px; animation: fade-up 0.6s ease both 0.1s; }
+.ds-eyebrow { font-family: var(--mono); font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 28px; animation: fade-up 0.6s ease both 0.1s; }
 .ds-h1 { font-family: var(--display); font-size: clamp(44px, 5.5vw, 72px); font-weight: 900; line-height: 1.05; margin-bottom: 28px; animation: fade-up 0.6s ease both 0.2s; letter-spacing: -0.02em; }
 .ds-h1 em { font-style: normal; color: var(--accent); font-weight: 400; }
 .ds-cursor { color: var(--accent); animation: cursor-blink 0.75s step-end infinite; }
@@ -62,14 +64,14 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .ds-fight-loop { animation: fight-pulse 2.8s ease-in-out infinite; display: inline-block; }
 .ds-hero-sub { font-size: 16px; color: var(--muted); line-height: 1.85; margin-bottom: 44px; font-weight: 400; animation: fade-up 0.6s ease both 0.3s; }
 .ds-hero-ctas { display: flex; gap: 20px; align-items: center; animation: fade-up 0.6s ease both 0.4s; }
-.ds-hero-free-note { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-top: 14px; animation: fade-up 0.6s ease both 0.5s; }
+.ds-hero-free-note { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-top: 14px; animation: fade-up 0.6s ease both 0.5s; }
 
 /* CAROUSEL */
 .ds-carousel { position: relative; animation: fade-up 0.7s ease both 0.35s; }
 .ds-carousel-card { background: white; border: 1px solid var(--border); padding: 28px; animation: card-slide-fade 0.55s ease; box-shadow: 0 4px 24px rgba(0,0,0,0.07); }
 @keyframes card-slide-fade { from { opacity: 0; transform: translateX(12px) translateY(4px); } to { opacity: 1; transform: translateX(0) translateY(0); } }
 .ds-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-.ds-card-lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.ds-card-lbl { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
 .ds-card-lbl-vs { color: var(--accent); }
 .ds-card-rounds { display: flex; gap: 4px; }
 .ds-card-round-pip { width: 20px; height: 3px; background: var(--border); transition: background 0.3s; }
@@ -79,8 +81,8 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .ds-card-counter { color: var(--ink); }
 .ds-card-hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 .ds-card-foot { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--border); }
-.ds-round-lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-.ds-defend-lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+.ds-round-lbl { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.ds-defend-lbl { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
 .ds-carousel-dots { display: flex; gap: 6px; justify-content: center; margin-top: 14px; }
 .ds-carousel-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); cursor: pointer; transition: background 0.3s; border: none; padding: 0; }
 .ds-carousel-dot-on { background: var(--accent); }
@@ -90,12 +92,12 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .ds-section-alt { background: var(--surface); }
 .ds-section-dark { background: var(--ink); }
 .ds-section-inner { max-width: 1100px; margin: 0 auto; }
-.ds-section-lbl { font-family: var(--mono); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 52px; }
+.ds-section-lbl { font-family: var(--mono); font-size: 13px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 52px; }
 .ds-h2 { font-family: var(--display); font-size: clamp(34px, 4vw, 52px); font-weight: 700; line-height: 1.1; margin-bottom: 52px; letter-spacing: -0.02em; }
 
 /* HOW IT WORKS */
 .ds-steps { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 48px; padding-top: 8px; }
-.ds-step-num { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.12em; margin-bottom: 20px; opacity: 0.7; }
+.ds-step-num { font-family: var(--mono); font-size: 13px; color: var(--accent); letter-spacing: 0.12em; margin-bottom: 20px; opacity: 0.7; }
 .ds-step-title { font-family: var(--display); font-size: 22px; font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
 .ds-step-body { font-size: 15px; color: var(--muted); line-height: 1.85; font-weight: 400; }
 
@@ -106,7 +108,7 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .ds-score-meta { flex: 1; }
 .ds-score-lbl { font-family: var(--sans); font-size: 15px; font-weight: 500; display: block; margin-bottom: 4px; }
 .ds-score-note { font-size: 13px; color: var(--muted); font-style: italic; font-weight: 400; }
-.ds-score-flag { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.08em; white-space: nowrap; }
+.ds-score-flag { font-family: var(--mono); font-size: 13px; color: var(--accent); letter-spacing: 0.08em; white-space: nowrap; }
 
 /* TESTIMONIALS */
 .ds-testi-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; }
@@ -115,7 +117,7 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .ds-testi-quote { font-size: 15px; line-height: 1.85; color: var(--ink); font-weight: 400; flex: 1; }
 .ds-testi-author { padding-top: 16px; border-top: 1px solid var(--border); }
 .ds-testi-name { font-family: var(--sans); font-size: 13px; font-weight: 500; display: block; }
-.ds-testi-role { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.06em; margin-top: 3px; display: block; }
+.ds-testi-role { font-family: var(--mono); font-size: 13px; color: var(--muted); letter-spacing: 0.06em; margin-top: 3px; display: block; }
 
 /* PRICING */
 .ds-pricing { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
@@ -129,18 +131,18 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .ds-plan-list { list-style: none; display: flex; flex-direction: column; gap: 11px; flex: 1; }
 .ds-plan-list li { font-size: 14px; padding-left: 18px; position: relative; opacity: 0.85; font-weight: 400; }
 .ds-plan-list li::before { content: '-'; position: absolute; left: 0; opacity: 0.35; }
-.ds-plan-note { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-top: -10px; }
+.ds-plan-note { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-top: -10px; }
 .ds-plan-dark .ds-plan-note { color: rgba(249,247,242,0.35); }
 
 /* BUTTONS */
-.ds-btn-primary { background: var(--ink); color: var(--bg); border: none; cursor: pointer; font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; padding: 14px 28px; transition: opacity 0.2s, transform 0.15s; align-self: flex-start; }
-.ds-btn-primary:hover { opacity: 0.82; transform: translateY(-1px); }
-.ds-btn-primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+.ds-btn-primary { background: var(--ink); color: var(--bg); border: none; cursor: pointer; font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; padding: 16px 36px; transition: transform 0.15s, box-shadow 0.2s; align-self: flex-start; box-shadow: 0 2px 10px rgba(0,0,0,0.22); }
+.ds-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(0,0,0,0.28); }
+.ds-btn-primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
 .ds-plan-dark .ds-btn-primary { background: var(--bg); color: var(--ink); }
 .ds-btn-outline { background: none; border: 1px solid var(--border); cursor: pointer; font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; padding: 14px 28px; color: var(--ink); transition: border-color 0.2s, transform 0.15s; align-self: flex-start; }
 .ds-btn-outline:hover { border-color: var(--ink); transform: translateY(-1px); }
-.ds-btn-ghost { background: none; border: none; cursor: pointer; font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding: 14px 0; text-decoration: none; transition: color 0.2s; }
-.ds-btn-ghost:hover { color: var(--ink); }
+.ds-btn-ghost { background: transparent; border: 1.5px solid var(--ink); cursor: pointer; font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); padding: 14px 28px; text-decoration: none; transition: color 0.2s, border-color 0.2s; display: inline-block; }
+.ds-btn-ghost:hover { color: var(--accent); border-color: var(--accent); }
 .ds-btn-danger { background: var(--accent); color: white; border: none; cursor: pointer; font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; padding: 14px 28px; transition: opacity 0.2s; width: 100%; }
 .ds-btn-danger:hover { opacity: 0.85; }
 .ds-btn-full { width: 100%; text-align: center; align-self: stretch; }
@@ -174,14 +176,14 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 
 /* HISTORY */
 .ds-history-list { display: flex; flex-direction: column; margin-bottom: 8px; }
-.ds-history-lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+.ds-history-lbl { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
 .ds-history-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); gap: 12px; }
 .ds-history-row:first-of-type { border-top: 1px solid var(--border); }
 .ds-history-info { flex: 1; min-width: 0; }
 .ds-history-title { font-size: 13px; font-weight: 500; display: block; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ds-history-date { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+.ds-history-date { font-family: var(--mono); font-size: 12px; color: var(--muted); }
 .ds-history-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-.ds-download-btn { background: none; border: 1px solid var(--border); cursor: pointer; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 5px 10px; transition: all 0.2s; }
+.ds-download-btn { background: none; border: 1px solid var(--border); cursor: pointer; font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 5px 10px; transition: all 0.2s; }
 .ds-download-btn:hover { border-color: var(--ink); color: var(--ink); }
 .ds-history-empty { text-align: center; padding: 40px 0; }
 .ds-history-empty-title { font-family: var(--display); font-size: 20px; font-weight: 700; margin-bottom: 8px; }
@@ -193,9 +195,9 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .ds-cookie-text { font-size: 13px; font-weight: 400; opacity: 0.85; line-height: 1.6; flex: 1; min-width: 240px; }
 .ds-cookie-text button { background: none; border: none; color: inherit; text-decoration: underline; cursor: pointer; font-size: 13px; opacity: 0.7; padding: 0; font-family: var(--sans); }
 .ds-cookie-actions { display: flex; gap: 12px; align-items: center; flex-shrink: 0; }
-.ds-cookie-accept { background: var(--bg); color: var(--ink); border: none; cursor: pointer; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 20px; transition: opacity 0.2s; }
+.ds-cookie-accept { background: var(--bg); color: var(--ink); border: none; cursor: pointer; font-family: var(--mono); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 20px; transition: opacity 0.2s; }
 .ds-cookie-accept:hover { opacity: 0.85; }
-.ds-cookie-decline { background: none; border: 1px solid rgba(249,247,242,0.3); color: var(--bg); cursor: pointer; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 20px; opacity: 0.7; transition: opacity 0.2s; }
+.ds-cookie-decline { background: none; border: 1px solid rgba(249,247,242,0.3); color: var(--bg); cursor: pointer; font-family: var(--mono); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 20px; opacity: 0.7; transition: opacity 0.2s; }
 .ds-cookie-decline:hover { opacity: 1; }
 
 /* PAYMENT GATE */
@@ -212,12 +214,12 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .ds-gate-list { list-style: none; display: flex; flex-direction: column; gap: 8px; flex: 1; }
 .ds-gate-list li { font-size: 13px; padding-left: 16px; position: relative; opacity: 0.85; font-weight: 400; }
 .ds-gate-list li::before { content: '-'; position: absolute; left: 0; opacity: 0.4; }
-.ds-gate-btn-primary { background: var(--bg); color: var(--ink); border: none; cursor: pointer; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 13px 20px; width: 100%; transition: opacity 0.2s; }
+.ds-gate-btn-primary { background: var(--bg); color: var(--ink); border: none; cursor: pointer; font-family: var(--mono); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; padding: 13px 20px; width: 100%; transition: opacity 0.2s; }
 .ds-gate-btn-primary:hover { opacity: 0.85; }
-.ds-gate-btn-outline { background: none; border: 1px solid var(--border); cursor: pointer; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 13px 20px; width: 100%; color: var(--ink); transition: border-color 0.2s; }
+.ds-gate-btn-outline { background: none; border: 1px solid var(--border); cursor: pointer; font-family: var(--mono); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; padding: 13px 20px; width: 100%; color: var(--ink); transition: border-color 0.2s; }
 .ds-gate-btn-outline:hover { border-color: var(--ink); }
-.ds-gate-terms { font-family: var(--mono); font-size: 10px; letter-spacing: 0.04em; color: rgba(249,247,242,0.35); line-height: 1.6; }
-.ds-gate-note { font-family: var(--mono); font-size: 10px; letter-spacing: 0.04em; color: var(--muted); line-height: 1.6; }
+.ds-gate-terms { font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; color: rgba(249,247,242,0.35); line-height: 1.6; }
+.ds-gate-note { font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; color: var(--muted); line-height: 1.6; }
 
 /* SPARRING */
 .spar-page { max-width: 680px; margin: 0 auto; padding: 48px 48px 100px; min-height: calc(100vh - 70px); }
@@ -229,17 +231,17 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .spar-prog-pip { width: 32px; height: 4px; background: var(--border); transition: background 0.4s; }
 .spar-prog-pip-active { background: var(--accent); }
 .spar-prog-pip-done { background: var(--ink); }
-.spar-prog-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
+.spar-prog-label { font-family: var(--mono); font-size: 13px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
 .spar-prompt-title { font-family: var(--display); font-size: 28px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 10px; }
 .spar-prompt-sub { font-size: 15px; color: var(--muted); margin-bottom: 32px; font-weight: 400; line-height: 1.7; }
 .spar-textarea { width: 100%; border: 1px solid var(--border); background: white; padding: 18px; font-family: var(--sans); font-size: 15px; color: var(--ink); outline: none; resize: vertical; min-height: 160px; transition: border-color 0.2s, box-shadow 0.2s; border-radius: 0; line-height: 1.75; font-weight: 400; }
 .spar-textarea:focus { border-color: var(--ink); box-shadow: 0 0 0 3px rgba(26,23,20,0.07); }
 .spar-submit-row { display: flex; justify-content: flex-end; margin-top: 14px; }
-.spar-char-hint { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.08em; margin-top: 8px; }
+.spar-char-hint { font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: 0.08em; margin-top: 8px; }
 .spar-thread { display: flex; flex-direction: column; }
 .spar-turn { padding: 28px 0; border-bottom: 1px solid var(--border); }
 .spar-turn:first-child { border-top: 1px solid var(--border); }
-.spar-turn-lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; display: block; }
+.spar-turn-lbl { font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; display: block; }
 .spar-turn-lbl-counter { color: var(--accent); }
 .spar-turn-text { font-size: 15px; line-height: 1.85; font-weight: 400; }
 .spar-turn-text-user { color: var(--muted); font-style: italic; }
@@ -247,14 +249,14 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 @keyframes counter-in { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: translateX(0); } }
 .spar-turn-text-counter { color: var(--ink); }
 .spar-defense { padding-top: 32px; }
-.spar-defense-lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; display: block; }
+.spar-defense-lbl { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; display: block; }
 .spar-loading { display: flex; align-items: center; gap: 12px; padding: 32px 0; }
 .spar-loading-dots { display: flex; gap: 6px; }
 .spar-loading-dot { width: 7px; height: 7px; background: var(--border); border-radius: 50%; animation: dot-pulse 1.3s ease infinite; }
 .spar-loading-dot:nth-child(2) { animation-delay: 0.2s; }
 .spar-loading-dot:nth-child(3) { animation-delay: 0.4s; }
 @keyframes dot-pulse { 0%,100% { background: var(--border); transform: scale(1); } 50% { background: var(--accent); transform: scale(1.3); } }
-.spar-loading-text { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+.spar-loading-text { font-family: var(--mono); font-size: 13px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
 .spar-wall { border: 1px solid var(--border); padding: 40px; margin-top: 32px; text-align: center; background: var(--surface); }
 .spar-wall-title { font-family: var(--display); font-size: 24px; font-weight: 700; margin-bottom: 10px; }
 .spar-wall-sub { font-size: 15px; color: var(--muted); margin-bottom: 28px; font-weight: 400; line-height: 1.7; }
@@ -268,16 +270,16 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .spar-verdict-scores { margin-bottom: 28px; }
 .spar-verdict-row { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid var(--border); gap: 20px; animation: fade-up 0.4s ease both; }
 .spar-verdict-lbl { font-size: 14px; font-weight: 500; flex: 1; }
-.spar-blind-title { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+.spar-blind-title { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
 .spar-blind-item { font-size: 14px; color: var(--muted); padding-left: 20px; position: relative; margin-bottom: 8px; font-weight: 400; line-height: 1.6; }
-.spar-blind-item::before { content: 'x'; position: absolute; left: 0; font-size: 11px; color: var(--accent); font-family: var(--mono); }
+.spar-blind-item::before { content: 'x'; position: absolute; left: 0; font-size: 13px; color: var(--accent); font-family: var(--mono); }
 .spar-verdict-summary { font-size: 15px; color: var(--ink); line-height: 1.85; font-weight: 400; padding: 22px; background: var(--surface); border-left: 3px solid var(--ink); margin-top: 24px; animation: fade-up 0.5s ease both 0.3s; }
 .spar-verdict-actions { display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; }
 
 /* LEGAL */
 .ds-legal { padding: 64px 48px 88px; max-width: 720px; margin: 0 auto; }
 .ds-legal-title { font-family: var(--display); font-size: clamp(32px, 4vw, 52px); font-weight: 900; letter-spacing: -0.02em; margin-bottom: 8px; }
-.ds-legal-date { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 52px; display: block; }
+.ds-legal-date { font-family: var(--mono); font-size: 13px; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 52px; display: block; }
 .ds-legal h2 { font-family: var(--display); font-size: 18px; font-weight: 700; margin-bottom: 12px; margin-top: 40px; }
 .ds-legal p { font-size: 15px; color: #3A3733; line-height: 1.9; margin-bottom: 16px; font-weight: 400; }
 .ds-legal ul { padding-left: 0; list-style: none; margin-bottom: 16px; display: flex; flex-direction: column; gap: 8px; }
@@ -352,6 +354,46 @@ function DSLogo({ size = 28, light = false }) {
       <path d="M25 6 L14 14 L25 22" stroke="#C63B15" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
+}
+
+
+function useCountUp(target, duration) {
+  var dur = duration || 1200;
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const started = useRef(false);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          observer.disconnect();
+          let startTime = null;
+          const step = (ts) => {
+            if (!startTime) startTime = ts;
+            const p = Math.min((ts - startTime) / dur, 1);
+            const eased = 1 - Math.pow(1 - p, 3);
+            setCount(Math.round(eased * target));
+            if (p < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        }
+      },
+      { threshold: 0.4 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [target]);
+  return { count, ref };
+}
+
+function ProofNum({ target, suffix, special }) {
+  const { count, ref } = useCountUp(target || 0, 1100);
+  if (special) {
+    return <span className="ds-proof-special" ref={ref}>{special}</span>;
+  }
+  const formatted = (target >= 1000) ? count.toLocaleString() : count;
+  return <span className="ds-proof-num" ref={ref}>{formatted}{suffix || ""}</span>;
 }
 
 function TypewriterText({ text, startDelay = 0 }) {
@@ -830,19 +872,19 @@ export default function LandingPage({ user: initialUser, authStatus }) {
           {/* SOCIAL PROOF */}
           <div className="ds-proof">
             <div className="ds-proof-item">
-              <span className="ds-proof-num">2,800+</span>
+              <ProofNum target={2800} suffix="+" />
               <span className="ds-proof-label">design decisions stress-tested</span>
             </div>
             <div className="ds-proof-item">
-              <span className="ds-proof-num">1 in 3</span>
+              <ProofNum special="1 in 3" />
               <span className="ds-proof-label">arguments don't survive round two</span>
             </div>
             <div className="ds-proof-item">
-              <span className="ds-proof-num">34</span>
+              <ProofNum target={34} />
               <span className="ds-proof-label">countries represented</span>
             </div>
             <div className="ds-proof-item">
-              <span className="ds-proof-num">91%</span>
+              <ProofNum target={91} suffix="%" />
               <span className="ds-proof-label">found a blind spot they had missed</span>
             </div>
           </div>
