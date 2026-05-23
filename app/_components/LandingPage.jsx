@@ -301,6 +301,12 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 @keyframes word-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes pip-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
+/* DELETE CHECKBOX */
+.ds-check-label { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; padding: 16px; background: #FFF8F6; border: 1px solid #F5C5BB; margin-bottom: 20px; }
+.ds-check-label input[type="checkbox"] { width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px; accent-color: var(--accent); cursor: pointer; }
+.ds-check-text { font-size: 13px; color: var(--ink); line-height: 1.65; font-weight: 400; }
+.ds-auth-error { font-size: 13px; color: var(--accent); margin-bottom: 12px; padding: 10px 14px; background: #FFF0EE; border: 1px solid #F5C5BB; line-height: 1.5; }
+
 @media (prefers-reduced-motion: reduce) {
   .ds-reveal { opacity: 1; transform: none; transition: none; }
   .ds-cursor { animation: none; }
@@ -630,9 +636,11 @@ export default function LandingPage({ user: initialUser, authStatus }) {
   const [authStep, setAuthStep] = useState("form");
   const [acctOpen, setAcctOpen] = useState(false);
   const [deleteStep, setDeleteStep] = useState(false);
+  const [deleteAcknowledged, setDeleteAcknowledged] = useState(false);
+  const [authError, setAuthError] = useState(null);
   const [toast, setToast] = useState(null);
   const [page, setPage] = useState("home");
-  const [cookiesAccepted, setCookiesAccepted] = useState(false);
+  const [cookiesAccepted, setCookiesAccepted] = useState(true); // true by default avoids flash
   const [activeRound, setActiveRound] = useState(0);
   const [sessions, setSessions] = useState(null);
   const router = useRouter();
@@ -642,6 +650,9 @@ export default function LandingPage({ user: initialUser, authStatus }) {
     document.head.appendChild(link);
     const style = document.createElement("style"); style.textContent = CSS;
     document.head.appendChild(style);
+    // Check cookie consent from localStorage
+    const stored = localStorage.getItem("ds_cookies_consent");
+    if (!stored) setCookiesAccepted(false);
     return () => { document.head.removeChild(link); document.head.removeChild(style); };
   }, []);
 
@@ -675,14 +686,29 @@ export default function LandingPage({ user: initialUser, authStatus }) {
 
   const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 3000); };
   const openModal = (t) => { setModal(t); setEmail(""); setAuthStep("form"); setDeleteStep(false); setAcctOpen(false); };
-  const closeModal = () => { setModal(null); setEmail(""); setAuthStep("form"); setDeleteStep(false); };
+  const closeModal = () => { setModal(null); setEmail(""); setAuthStep("form"); setDeleteStep(false); setDeleteAcknowledged(false); setAuthError(null); };
   const goPage = (p) => { setPage(p); window.scrollTo(0, 0); };
 
   const handleAuth = async () => {
     if (!email.trim() || !email.includes("@")) return;
-    const res = await fetch("/api/auth/send-link", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
-    if (res.ok) setAuthStep("sent");
-    else showToast("Something went wrong. Try again.");
+    setAuthError(null);
+    const res = await fetch("/api/auth/send-link", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, mode: modal }),
+    });
+    if (res.ok) {
+      setAuthStep("sent");
+    } else {
+      const data = await res.json();
+      if (data.error === "exists") {
+        setAuthError("An account with this email already exists.");
+      } else if (data.error === "not_found") {
+        setAuthError("No account found with this email.");
+      } else {
+        showToast("Something went wrong. Try again.");
+      }
+    }
   };
 
   const handleLogout = async () => {
@@ -919,8 +945,8 @@ export default function LandingPage({ user: initialUser, authStatus }) {
         <div className="ds-cookie">
           <p className="ds-cookie-text">We use essential cookies for authentication only. <button onClick={() => goPage("cookies")}>Learn more</button></p>
           <div className="ds-cookie-actions">
-            <button className="ds-cookie-decline" onClick={() => setCookiesAccepted(true)}>Decline non-essential</button>
-            <button className="ds-cookie-accept" onClick={() => setCookiesAccepted(true)}>Accept</button>
+            <button className="ds-cookie-decline" onClick={() => { localStorage.setItem("ds_cookies_consent","declined"); setCookiesAccepted(true); }}>Decline non-essential</button>
+            <button className="ds-cookie-accept" onClick={() => { localStorage.setItem("ds_cookies_consent","accepted"); setCookiesAccepted(true); }}>Accept</button>
           </div>
         </div>
       )}
@@ -976,7 +1002,14 @@ export default function LandingPage({ user: initialUser, authStatus }) {
               <>
                 <h2 className="ds-modal-title">{modal === "login" ? "Sign in" : "Create account"}</h2>
                 <p className="ds-modal-sub">{modal === "login" ? "Enter your email. We will send a link." : "Sparring Partner plan - $9/mo. Enter your email to get started."}</p>
-                <input className="ds-input" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleAuth()} autoFocus />
+                <input className="ds-input" type="email" placeholder="you@example.com" value={email} onChange={(e) => { setEmail(e.target.value); setAuthError(null); }} onKeyDown={(e) => e.key === "Enter" && handleAuth()} autoFocus />
+                {authError && (
+                  <div className="ds-auth-error">
+                    {authError}
+                    {authError.includes("already exists") && <> <button className="ds-text-btn" style={{fontSize:13}} onClick={() => { setAuthError(null); openModal("login"); }}>Sign in instead</button>.</>}
+                    {authError.includes("No account") && <> <button className="ds-text-btn" style={{fontSize:13}} onClick={() => { setAuthError(null); openModal("signup"); }}>Create an account</button>.</>}
+                  </div>
+                )}
                 <button className="ds-btn-primary ds-btn-full" onClick={handleAuth}>{modal === "login" ? "Send link" : "Continue"}</button>
                 <p className="ds-modal-switch">
                   {modal === "login"
@@ -1037,10 +1070,42 @@ export default function LandingPage({ user: initialUser, authStatus }) {
             {modal === "delete" && (
               <>
                 <h2 className="ds-modal-title">Delete account</h2>
-                <p className="ds-modal-sub">{deleteStep ? "This will permanently erase your account, all sessions, and cancel your subscription. There is no undo." : "Your account, all saved sessions, and your subscription will be permanently removed."}</p>
-                {!deleteStep
-                  ? <button className="ds-btn-danger" onClick={handleDelete}>Delete my account</button>
-                  : <div className="ds-delete-stack"><button className="ds-btn-danger" onClick={handleDelete}>Yes, delete permanently</button><button className="ds-btn-outline ds-btn-full" onClick={closeModal}>Cancel</button></div>}
+                <p className="ds-modal-sub" style={{ marginBottom: 20 }}>
+                  {deleteStep
+                    ? "Last chance. This cannot be undone."
+                    : "Permanently removes your account and all associated data."}
+                </p>
+                {!deleteStep ? (
+                  <>
+                    {user?.plan === "paid" && (
+                      <label className="ds-check-label">
+                        <input
+                          type="checkbox"
+                          checked={deleteAcknowledged}
+                          onChange={(e) => setDeleteAcknowledged(e.target.checked)}
+                        />
+                        <span className="ds-check-text">
+                          I understand that my Sparring Partner subscription will be cancelled immediately
+                          and my entire session history will be permanently deleted. There is no refund for
+                          the current billing period.
+                        </span>
+                      </label>
+                    )}
+                    <button
+                      className="ds-btn-danger"
+                      onClick={handleDelete}
+                      disabled={user?.plan === "paid" && !deleteAcknowledged}
+                      style={{ opacity: user?.plan === "paid" && !deleteAcknowledged ? 0.4 : 1, cursor: user?.plan === "paid" && !deleteAcknowledged ? "not-allowed" : "pointer" }}
+                    >
+                      Delete my account
+                    </button>
+                  </>
+                ) : (
+                  <div className="ds-delete-stack">
+                    <button className="ds-btn-danger" onClick={handleDelete}>Yes, delete permanently</button>
+                    <button className="ds-btn-outline ds-btn-full" onClick={closeModal}>Cancel</button>
+                  </div>
+                )}
               </>
             )}
           </div>
