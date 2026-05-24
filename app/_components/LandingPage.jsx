@@ -707,9 +707,33 @@ export default function LandingPage({ user: initialUser, authStatus }) {
 
   useEffect(() => {
     if (!authStatus) return;
-    if (authStatus === "success") { router.refresh(); window.history.replaceState({}, "", "/"); }
-    else if (authStatus === "expired") { setModal("auth-expired"); window.history.replaceState({}, "", "/"); }
-    else { showToast("Something went wrong. Please try signing in again."); window.history.replaceState({}, "", "/"); }
+    if (authStatus === "success") {
+      router.refresh();
+      window.history.replaceState({}, "", "/");
+    } else if (authStatus === "upgraded") {
+      // Payment succeeded — refresh JWT from DB (handles webhook race condition)
+      const params = new URLSearchParams(window.location.search);
+      const sessionId = params.get("session_id");
+      fetch("/api/auth/refresh" + (sessionId ? "?session_id=" + sessionId : ""))
+        .then((r) => r.json())
+        .then((data) => {
+          if (data.user) {
+            setUser(data.user);
+            showToast("Welcome to Sparring Partner. Full access unlocked.");
+          }
+          window.history.replaceState({}, "", "/");
+        })
+        .catch(() => {
+          router.refresh();
+          window.history.replaceState({}, "", "/");
+        });
+    } else if (authStatus === "expired") {
+      setModal("auth-expired");
+      window.history.replaceState({}, "", "/");
+    } else {
+      showToast("Something went wrong. Please try signing in again.");
+      window.history.replaceState({}, "", "/");
+    }
   }, [authStatus]);
 
   useEffect(() => {
@@ -810,7 +834,7 @@ export default function LandingPage({ user: initialUser, authStatus }) {
                   </div>
                   <button className="ds-dropdown-item" onClick={() => { setAcctOpen(false); openModal("history"); }}>Session history</button>
                   <div className="ds-dropdown-divider" />
-                  <button className="ds-dropdown-item" onClick={handleCancelSub}>Cancel subscription</button>
+                  <button className="ds-dropdown-item" onClick={handleCancelSub}>Manage billing</button>
                   <button className="ds-dropdown-item" onClick={handleLogout}>Sign out</button>
                   <button className="ds-dropdown-item ds-danger-item" onClick={() => { setAcctOpen(false); openModal("delete"); }}>Delete account</button>
                 </div>
