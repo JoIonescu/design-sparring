@@ -45,10 +45,10 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .ds-danger-item { color: var(--accent) !important; }
 
 /* SOCIAL PROOF BAR */
-.ds-proof { background: var(--ink); padding: 22px 48px; display: flex; justify-content: center; gap: 72px; flex-wrap: wrap; }
-.ds-proof-item { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.ds-proof { background: var(--ink); padding: 36px 48px; display: flex; justify-content: center; gap: 100px; flex-wrap: wrap; }
+.ds-proof-item { display: flex; flex-direction: column; align-items: center; gap: 12px; }
 .ds-proof-num { font-family: var(--mono); font-size: 48px; color: var(--accent); letter-spacing: -0.03em; font-weight: 400; line-height: 1; }
-.ds-proof-special { font-family: var(--mono); font-size: 32px; color: var(--accent); letter-spacing: -0.02em; font-weight: 400; line-height: 1; animation: proof-pop 0.6s cubic-bezier(0.34,1.56,0.64,1) both; }
+.ds-proof-special { font-family: var(--mono); font-size: 48px; color: var(--accent); letter-spacing: -0.03em; font-weight: 400; line-height: 1; animation: proof-pop 0.6s cubic-bezier(0.34,1.56,0.64,1) both; }
 @keyframes proof-pop { from { opacity: 0; transform: scale(0.4); } to { opacity: 1; transform: scale(1); } }
 .ds-proof-label { font-family: var(--sans); font-size: 12px; color: rgba(249,247,242,0.5); font-weight: 300; text-align: center; max-width: 160px; line-height: 1.4; }
 
@@ -321,7 +321,9 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
   .ds-score-row { flex-direction: column; align-items: flex-start; gap: 12px; } .ds-modal { padding: 36px 24px; } .ds-modal-wide { padding: 32px 20px; }
   .ds-legal { padding: 48px 20px 72px; } .ds-cookie { padding: 16px 20px; flex-direction: column; align-items: flex-start; gap: 16px; }
   .spar-page { padding: 32px 20px 80px; } .spar-wall-ctas { flex-direction: column; }
-  .ds-gate-cards { grid-template-columns: 1fr; } .ds-proof { gap: 32px; padding: 20px; }
+  .ds-gate-cards { grid-template-columns: 1fr; } .ds-proof { gap: 40px; padding: 28px 20px; }
+  /* Prevent iOS Safari zoom on input focus — must be 16px minimum */
+  .spar-textarea, .ds-input { font-size: 16px !important; }
 }
 `;
 
@@ -880,8 +882,8 @@ export default function LandingPage({ user: initialUser, authStatus }) {
               <span className="ds-proof-label">arguments don't survive round two</span>
             </div>
             <div className="ds-proof-item">
-              <ProofNum target={34} />
-              <span className="ds-proof-label">countries represented</span>
+              <ProofNum target={1200} suffix="+" />
+              <span className="ds-proof-label">active designers</span>
             </div>
             <div className="ds-proof-item">
               <ProofNum target={91} suffix="%" />
