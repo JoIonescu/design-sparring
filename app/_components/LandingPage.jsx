@@ -47,8 +47,8 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 /* SOCIAL PROOF BAR */
 .ds-proof { background: var(--ink); padding: 36px 48px; display: flex; justify-content: center; gap: 100px; flex-wrap: wrap; }
 .ds-proof-item { display: flex; flex-direction: column; align-items: center; gap: 12px; }
-.ds-proof-num { font-family: var(--mono); font-size: 48px; color: var(--accent); letter-spacing: -0.03em; font-weight: 400; line-height: 1; }
-.ds-proof-special { font-family: var(--mono); font-size: 48px; color: var(--accent); letter-spacing: -0.03em; font-weight: 400; line-height: 1; animation: proof-pop 0.6s cubic-bezier(0.34,1.56,0.64,1) both; }
+.ds-proof-num { font-family: var(--display); font-size: 48px; color: var(--accent); letter-spacing: -0.03em; font-weight: 700; line-height: 1; }
+.ds-proof-special { font-family: var(--display); font-size: 48px; color: var(--accent); letter-spacing: -0.03em; font-weight: 700; line-height: 1; animation: proof-pop 0.6s cubic-bezier(0.34,1.56,0.64,1) both; }
 @keyframes proof-pop { from { opacity: 0; transform: scale(0.4); } to { opacity: 1; transform: scale(1); } }
 .ds-proof-label { font-family: var(--sans); font-size: 12px; color: rgba(249,247,242,0.5); font-weight: 300; text-align: center; max-width: 160px; line-height: 1.4; }
 
@@ -289,7 +289,20 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .ds-legal-rule { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 
 /* TOAST */
-.ds-toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 13px 26px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; z-index: 1000; white-space: nowrap; animation: toast-in 0.3s ease, toast-out 0.3s ease 2.7s forwards; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+/* AUDIENCE TABS */
+.ds-aud-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 44px; }
+.ds-aud-tab { background: none; border: 1px solid var(--border); cursor: pointer; font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; padding: 10px 20px; color: var(--muted); transition: all 0.2s; }
+.ds-aud-tab:hover { border-color: var(--ink); color: var(--ink); }
+.ds-aud-tab-on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.ds-aud-hook { font-family: var(--display); font-size: clamp(24px, 3vw, 36px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 16px; }
+.ds-aud-body { font-size: 16px; color: var(--muted); line-height: 1.9; font-weight: 400; max-width: 600px; }
+
+/* LINKEDIN FOOTER LINK */
+.ds-footer-linkedin { display: flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(249,247,242,0.5); text-decoration: none; transition: color 0.2s; font-family: var(--sans); font-weight: 400; }
+.ds-footer-linkedin:hover { color: var(--bg); }
+.ds-footer-linkedin svg { flex-shrink: 0; }
+
+.ds-toast { position: fixed;.ds-toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 13px 26px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; z-index: 1000; white-space: nowrap; animation: toast-in 0.3s ease, toast-out 0.3s ease 2.7s forwards; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
 @keyframes toast-in { from { opacity: 0; transform: translateX(-50%) translateY(8px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
 @keyframes toast-out { to { opacity: 0; } }
 @keyframes fade-up { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
@@ -343,6 +356,34 @@ const TESTIMONIALS = [
   { quote: "The verdict flagged a blind spot I had been quietly skirting for a month. Cheaper and more honest than any design review I have sat through.", name: "Marcus T.", role: "UX Lead, fintech" },
   { quote: "It does not tell you what to do. It makes you realize you did not actually know why you were doing it. That is the uncomfortable part. Also the useful part.", name: "Priya M.", role: "Head of Design" },
 ];
+const AUDIENCES = [
+  {
+    id: "leads", label: "Senior Designers",
+    hook: "Your decisions carry weight. Test them before others do.",
+    body: "You have defended that decision four times this week. To your PM. To your lead. To yourself. But have you actively tried to break it? Stress-testing your own rationale before someone else does is what separates a designer who ships from one who stands behind what they ship.",
+  },
+  {
+    id: "solo", label: "Freelancers",
+    hook: "Solo does not mean unchallenged.",
+    body: "When you work alone, there is no one to tell you your decision is wrong. Which sounds like freedom — until you are three weeks into implementation and the core assumption was never questioned. Solo does not have to mean unchallenged.",
+  },
+  {
+    id: "pm", label: "Product Managers",
+    hook: "You are making design decisions.",
+    body: "You called them product decisions. But someone had to choose what is above the fold. Someone picked the pattern. Someone decided what the empty state says. That was you. PMs who can clearly articulate design rationale under pressure are rare — and valuable.",
+  },
+  {
+    id: "junior", label: "Junior Designers",
+    hook: "The gap is not Figma skills.",
+    body: "The gap between junior and mid-level is being able to stand in a review, explain clearly why you made the decision you made, and not fold when someone pushes back. That is a trainable skill. This is how you train it.",
+  },
+  {
+    id: "founders", label: "Founders",
+    hook: "You made five UX calls this week.",
+    body: "You do not have a designer. You still made decisions about button placement, onboarding flow, empty state copy, pricing layout. Nobody challenged any of them. The absence of pushback is not validation. It is silence.",
+  },
+];
+
 const DEMO_ROUNDS = [
   { round: 1, yourLabel: "Your rationale", yours: "We should use a carousel here. It is a familiar pattern users already know.", counter: "Familiarity is not the same as effectiveness. Carousels are a well-documented way to hide content. Most users never interact past the first frame. You have chosen a pattern users recognise, not one that serves them.", action: "Defend your position" },
   { round: 2, yourLabel: "Your defense", yours: "We tested it with users and they said they liked the visual variety. Engagement metrics were higher.", counter: "Reported preference and actual task completion diverge constantly in UX research. Higher engagement with a carousel often measures confusion or accidental swipes, not satisfaction or goal achievement.", action: "Push back" },
@@ -396,6 +437,30 @@ function ProofNum({ target, suffix, special }) {
   }
   const formatted = (target >= 1000) ? count.toLocaleString() : count;
   return <span className="ds-proof-num" ref={ref}>{formatted}{suffix || ""}</span>;
+}
+
+function AudienceSection() {
+  const [active, setActive] = useState(0);
+  const aud = AUDIENCES[active];
+  return (
+    <div>
+      <div className="ds-aud-tabs">
+        {AUDIENCES.map((a, i) => (
+          <button
+            key={a.id}
+            className={"ds-aud-tab" + (i === active ? " ds-aud-tab-on" : "")}
+            onClick={() => setActive(i)}
+          >
+            {a.label}
+          </button>
+        ))}
+      </div>
+      <div key={active}>
+        <h3 className="ds-aud-hook" style={{ animation: "fade-up 0.3s ease both" }}>{aud.hook}</h3>
+        <p className="ds-aud-body" style={{ animation: "fade-up 0.3s ease both 0.06s" }}>{aud.body}</p>
+      </div>
+    </div>
+  );
 }
 
 function TypewriterText({ text, startDelay = 0 }) {
@@ -687,6 +752,7 @@ export default function LandingPage({ user: initialUser, authStatus }) {
   const [cookiesAccepted, setCookiesAccepted] = useState(true); // true by default avoids flash
   const [activeRound, setActiveRound] = useState(0);
   const [sessions, setSessions] = useState(null);
+  const [upgrading, setUpgrading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -785,10 +851,20 @@ export default function LandingPage({ user: initialUser, authStatus }) {
   };
 
   const handleUpgrade = async () => {
-    const res = await fetch("/api/stripe/checkout", { method: "POST" });
-    const data = await res.json();
-    if (data.url) window.location.href = data.url;
-    else showToast("Payment unavailable right now. Try again soon.");
+    setUpgrading(true);
+    try {
+      const res = await fetch("/api/stripe/checkout", { method: "POST" });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        showToast(data.error || "Payment unavailable. Stripe may not be configured.");
+        setUpgrading(false);
+      }
+    } catch {
+      showToast("Connection error. Try again.");
+      setUpgrading(false);
+    }
   };
 
   const handleCancelSub = async () => {
@@ -969,6 +1045,14 @@ export default function LandingPage({ user: initialUser, authStatus }) {
             </div>
           </section>
 
+          {/* WHO IT'S FOR */}
+          <section className="ds-section">
+            <div className="ds-section-inner">
+              <span className="ds-section-lbl ds-reveal">Who it is for</span>
+              <AudienceSection />
+            </div>
+          </section>
+
           {/* PRICING */}
           <section className="ds-section ds-section-alt" id="pricing">
             <div className="ds-section-inner">
@@ -1004,6 +1088,17 @@ export default function LandingPage({ user: initialUser, authStatus }) {
           <button onClick={() => goPage("privacy")}>Privacy</button>
           <button onClick={() => goPage("terms")}>Terms</button>
           <button onClick={() => goPage("cookies")}>Cookies</button>
+          <a
+            href="https://www.linkedin.com/company/design-decision"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ds-footer-linkedin"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+            Design Sparring on LinkedIn
+          </a>
         </div>
         <span className="ds-footer-copy">2026</span>
       </footer>
@@ -1044,7 +1139,7 @@ export default function LandingPage({ user: initialUser, authStatus }) {
                       <li>Download session records</li>
                       <li>Unlimited sessions</li>
                     </ul>
-                    <button className="ds-gate-btn-primary" onClick={handleUpgrade}>Unlock full access</button>
+                    <button className="ds-gate-btn-primary" onClick={handleUpgrade} disabled={upgrading} style={{opacity: upgrading ? 0.6 : 1}}>{upgrading ? "Redirecting to payment..." : "Unlock full access"}</button>
                     <p className="ds-gate-terms">Cancel anytime. No refunds for partial months.</p>
                   </div>
                   <div className="ds-gate-card">
