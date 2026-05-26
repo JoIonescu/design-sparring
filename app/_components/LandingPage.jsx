@@ -495,16 +495,8 @@ return <>{displayed}{!done && <span className="ds-cursor">|</span>}</>;
 }
 
 function AnimatedCounter({ text }) {
-const words = text.split(" ");
-return (
-<>
-{words.map((word, i) => (
-<span key={i} style={{ display: "inline", opacity: 0, animation: "word-in 0.25s ease " + (80 + i * 38) + "ms forwards" }}>
-{word}{i < words.length - 1 ? " " : ""}
-</span>
-))}
-</>
-);
+// Simple reliable render — entrance handled by .spar-counter-body CSS animation
+return <>{text}</>;
 }
 
 function Pips({ score, total = 5, size = "normal", animate = false }) {
@@ -998,7 +990,7 @@ Your account
 <button className="ds-btn-primary" onClick={() => goPage("spar")}>{user?.plan === "paid" ? "Start Sparring" : "Start sparring free"}</button>
 <a className="ds-btn-ghost" href="#pricing">See pricing</a>
 </div>
-<p className="ds-hero-free-note">Free tier - no account required</p>
+{user?.plan !== "paid" && <p className="ds-hero-free-note">Free tier - no account required</p>}
 </div>
 <div className="ds-carousel">
 <div className="ds-carousel-card" key={activeRound}>

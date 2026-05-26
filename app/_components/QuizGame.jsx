@@ -4,21 +4,21 @@ import { useState, useEffect } from "react";
 const QUIZ_CSS = `
 .qz { font-family: 'Roboto', sans-serif; background: #fff; min-height: 100vh; }
 .qz-nav { display: flex; align-items: center; justify-content: space-between; padding: 20px 48px; background: #fff; border-bottom: 1px solid #EEE; position: sticky; top: 0; z-index: 10; }
-.qz-back { background: none; border: none; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #918D87; transition: color 0.2s; padding: 0; display: flex; align-items: center; gap: 8px; }
+.qz-back { background: none; border: none; cursor: pointer; font-family: 'Roboto', sans-serif; font-size: 13px; font-weight: 400; color: #6B6862; transition: color 0.2s; padding: 0; display: flex; align-items: center; gap: 8px; }
 .qz-back:hover { color: #1A1714; }
 .qz-brand { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #1A1714; opacity: 0.4; }
 .qz-progress-bar { height: 3px; background: #F0EDE9; }
 .qz-progress-fill { height: 3px; background: #C63B15; transition: width 0.4s ease; }
 .qz-body { max-width: 600px; margin: 0 auto; padding: 56px 24px 80px; }
-.qz-step { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #C63B15; margin-bottom: 12px; }
+.qz-step { font-family: 'Roboto', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #C63B15; margin-bottom: 12px; }
 .qz-q { font-family: 'Lato', sans-serif; font-size: clamp(22px, 3.5vw, 30px); font-weight: 700; line-height: 1.25; letter-spacing: -0.01em; color: #1A1714; margin-bottom: 36px; }
 .qz-options { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
 .qz-option { border: 1.5px solid #E8E5DF; background: #fff; cursor: pointer; padding: 18px 22px; text-align: left; font-family: 'Roboto', sans-serif; font-size: 15px; color: #3A3733; line-height: 1.6; font-weight: 400; transition: border-color 0.18s, background 0.18s, color 0.18s; display: flex; align-items: flex-start; gap: 14px; }
 .qz-option:hover { border-color: #1A1714; color: #1A1714; }
 .qz-option-on { border-color: #C63B15 !important; background: #FFF5F3; color: #1A1714; }
-.qz-option-letter { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #918D87; flex-shrink: 0; margin-top: 2px; transition: color 0.18s; }
+.qz-option-letter { font-family: 'Roboto', sans-serif; font-size: 13px; font-weight: 500; color: #918D87; flex-shrink: 0; margin-top: 2px; transition: color 0.18s; }
 .qz-option-on .qz-option-letter { color: #C63B15; }
-.qz-next { background: #1A1714; color: #F9F7F2; border: none; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; padding: 14px 32px; transition: opacity 0.2s, transform 0.15s; }
+.qz-next { background: #1A1714; color: #F9F7F2; border: none; cursor: pointer; font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 14px 32px; transition: opacity 0.2s, transform 0.15s; }
 .qz-next:hover { opacity: 0.82; transform: translateY(-1px); }
 .qz-next:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
 .qz-illus { margin-bottom: 28px; }
@@ -26,25 +26,26 @@ const QUIZ_CSS = `
 .qz-intro-title { font-family: 'Lato', sans-serif; font-size: clamp(28px, 5vw, 48px); font-weight: 900; letter-spacing: -0.03em; color: #1A1714; margin-bottom: 16px; line-height: 1.05; }
 .qz-intro-title em { font-style: normal; color: #C63B15; }
 .qz-intro-sub { font-size: 16px; color: #918D87; line-height: 1.8; margin-bottom: 12px; font-weight: 400; max-width: 440px; margin-left: auto; margin-right: auto; }
-.qz-intro-meta { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #C8C4BC; margin-bottom: 40px; }
-.qz-start { background: #1A1714; color: #F9F7F2; border: none; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; padding: 16px 40px; transition: opacity 0.2s, transform 0.15s; box-shadow: 0 2px 12px rgba(0,0,0,0.18); }
-.qz-start:hover { opacity: 0.85; transform: translateY(-1px); }
+.qz-intro-meta { font-family: 'Roboto', sans-serif; font-size: 13px; color: #6B6862; margin-bottom: 40px; font-weight: 400; }
+.qz-start { background: transparent; color: #C63B15; border: 2px solid #C63B15; cursor: pointer; font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 16px 44px; transition: background 0.2s, color 0.2s; animation: qz-pulse 2s ease-in-out infinite; }
+.qz-start:hover { background: #C63B15; color: #fff; animation: none; box-shadow: none; }
+@keyframes qz-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(198,59,21,0.35); } 60% { box-shadow: 0 0 0 14px rgba(198,59,21,0); } }
 .qz-result { animation: qz-in 0.4s ease; }
 @keyframes qz-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-.qz-result-eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #C63B15; margin-bottom: 12px; display: block; }
+.qz-result-eyebrow { font-family: 'Roboto', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #C63B15; margin-bottom: 12px; display: block; }
 .qz-result-type { font-family: 'Lato', sans-serif; font-size: clamp(28px, 4vw, 42px); font-weight: 900; letter-spacing: -0.03em; color: #1A1714; margin-bottom: 6px; line-height: 1.1; }
-.qz-result-tagline { font-family: 'DM Mono', monospace; font-size: 13px; color: #918D87; margin-bottom: 28px; letter-spacing: 0.04em; }
+.qz-result-tagline { font-family: 'Roboto', sans-serif; font-size: 14px; color: #6B6862; margin-bottom: 28px; font-weight: 400; }
 .qz-result-desc { font-size: 15px; color: #3A3733; line-height: 1.9; font-weight: 400; margin-bottom: 32px; padding: 24px; background: #F9F7F2; border-left: 3px solid #C63B15; }
 .qz-scores { margin-bottom: 32px; }
-.qz-scores-title { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #918D87; margin-bottom: 16px; }
+.qz-scores-title { font-family: 'Roboto', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #6B6862; margin-bottom: 16px; }
 .qz-score-row { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
-.qz-score-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.06em; color: #1A1714; width: 100px; flex-shrink: 0; }
+.qz-score-label { font-family: 'Roboto', sans-serif; font-size: 13px; color: #1A1714; width: 110px; flex-shrink: 0; font-weight: 400; }
 .qz-score-track { flex: 1; height: 5px; background: #EEE; }
 .qz-score-fill { height: 5px; background: #1A1714; transition: width 0.8s ease; }
 .qz-score-fill-win { background: #C63B15; }
-.qz-score-num { font-family: 'DM Mono', monospace; font-size: 11px; color: #918D87; width: 24px; text-align: right; }
+.qz-score-num { font-family: 'Roboto', sans-serif; font-size: 13px; color: #918D87; width: 28px; text-align: right; }
 .qz-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
-.qz-tag { border: 1px solid #DDD9D1; padding: 6px 14px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #918D87; }
+.qz-tag { border: 1px solid #DDD9D1; padding: 7px 16px; font-family: 'Roboto', sans-serif; font-size: 13px; color: #6B6862; font-weight: 400; }
 .qz-watchout { padding: 16px 20px; border: 1px solid #F5C5BB; background: #FFF8F6; font-size: 14px; color: #3A3733; line-height: 1.7; margin-bottom: 32px; }
 .qz-watchout strong { color: #C63B15; font-weight: 500; }
 .qz-email-section { border-top: 1px solid #EEE; padding-top: 28px; margin-bottom: 32px; }
@@ -53,16 +54,16 @@ const QUIZ_CSS = `
 .qz-email-row { display: flex; gap: 10px; flex-wrap: wrap; }
 .qz-email-input { flex: 1; min-width: 200px; border: 1.5px solid #DDD9D1; background: #fff; padding: 12px 14px; font-family: 'Roboto', sans-serif; font-size: 15px; color: #1A1714; outline: none; transition: border-color 0.2s; }
 .qz-email-input:focus { border-color: #1A1714; }
-.qz-email-send { background: #1A1714; color: #F9F7F2; border: none; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 12px 20px; transition: opacity 0.2s; white-space: nowrap; }
+.qz-email-send { background: #1A1714; color: #F9F7F2; border: none; cursor: pointer; font-family: 'Roboto', sans-serif; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 12px 20px; transition: opacity 0.2s; white-space: nowrap; }
 .qz-email-send:hover { opacity: 0.82; }
 .qz-email-send:disabled { opacity: 0.4; cursor: not-allowed; }
-.qz-email-success { font-family: 'DM Mono', monospace; font-size: 12px; color: #5CAD6A; letter-spacing: 0.06em; margin-top: 8px; }
+.qz-email-success { font-family: 'Roboto', sans-serif; font-size: 12px; color: #5CAD6A; letter-spacing: 0.06em; margin-top: 8px; }
 .qz-result-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
-.qz-retake { background: none; border: 1.5px solid #DDD9D1; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; padding: 12px 24px; color: #1A1714; transition: border-color 0.2s; }
+.qz-retake { background: none; border: 1.5px solid #DDD9D1; cursor: pointer; font-family: 'Roboto', sans-serif; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; padding: 12px 24px; color: #1A1714; transition: border-color 0.2s; }
 .qz-retake:hover { border-color: #1A1714; }
-.qz-done { background: #1A1714; color: #F9F7F2; border: none; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; padding: 12px 24px; transition: opacity 0.2s; }
+.qz-done { background: #1A1714; color: #F9F7F2; border: none; cursor: pointer; font-family: 'Roboto', sans-serif; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; padding: 12px 24px; transition: opacity 0.2s; }
 .qz-done:hover { opacity: 0.82; }
-.qz-citation { font-family: 'DM Mono', monospace; font-size: 11px; color: #B8B4AE; line-height: 1.7; letter-spacing: 0.04em; border-top: 1px solid #EEE; padding-top: 20px; }
+.qz-citation { font-family: 'Roboto', sans-serif; font-size: 12px; color: #918D87; line-height: 1.75; border-top: 1px solid #EEE; padding-top: 20px; font-weight: 400; }
 @media (max-width: 600px) {
 .qz-nav { padding: 16px 20px; }
 .qz-body { padding: 36px 20px 60px; }
@@ -352,7 +353,7 @@ return (
 <h1 className="qz-intro-title">What type of decision-maker<br /><em>are you?</em></h1>
 <p className="qz-intro-sub">10 questions. No right answers. A clear picture of how you make design decisions under pressure.</p>
 <p className="qz-intro-meta">Based on the GDMS model · 3 minutes</p>
-<button className="qz-start" onClick={() => setScreen("quiz")}>Start the assessment</button>
+<button className="qz-start" onClick={() => setScreen("quiz")}>Start the test</button>
 </div>
 </div>
 )}
