@@ -309,11 +309,21 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 @keyframes fade-up { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
 
 /* QUIZ NAV BUTTON */
-.ds-quiz-nav-pill { display: inline-flex; align-items: center; gap: 8px; background: none; border: 1.5px solid rgba(198,59,21,0.35); border-radius: 100px; cursor: pointer; font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--accent); padding: 7px 16px; transition: background 0.2s, color 0.2s, border-color 0.2s; position: relative; white-space: nowrap; }
-.ds-quiz-nav-pill:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
-.ds-quiz-nav-pill:hover .ds-quiz-dot { background: #fff; animation: none; }
-.ds-quiz-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; animation: dot-live 2.2s ease-in-out infinite; }
-@keyframes dot-live { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.65); } }
+.ds-quiz-nav-pill { display: inline-flex; align-items: center; gap: 7px; background: var(--accent); border: none; border-radius: 100px; cursor: pointer; font-family: var(--sans); font-size: 13px; font-weight: 600; color: #fff; padding: 8px 18px; position: relative; overflow: hidden; white-space: nowrap; transition: opacity 0.2s, transform 0.15s; }
+.ds-quiz-nav-pill:hover { opacity: 0.88; transform: translateY(-1px); }
+.ds-quiz-nav-pill::after { content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.28), transparent); animation: nav-shine 3.5s ease-in-out infinite 1s; pointer-events: none; }
+@keyframes nav-shine { 0% { left: -100%; } 35%,100% { left: 160%; } }
+.ds-quiz-dot { display: none; }
+
+/* VERDICT TWO-COLUMN SPLIT */
+.ds-verdict-landing { overflow: hidden; }
+.ds-verdict-split { display: grid; grid-template-columns: 1fr 1fr; min-height: 640px; }
+.ds-verdict-content { padding: 96px 60px; display: flex; flex-direction: column; justify-content: center; background: var(--bg); }
+.ds-verdict-image { background-size: cover; background-position: center; background-color: #1A1714; min-height: 400px; }
+.ds-verdict-h2 { font-family: var(--display); font-size: clamp(32px, 4vw, 52px); font-weight: 700; line-height: 1.1; margin-bottom: 48px; letter-spacing: -0.02em; }
+.ds-verdict-h2-accent { color: var(--accent); display: block; }
+.ds-score-lbl { font-family: var(--display); font-size: 17px; font-weight: 700; display: block; margin-bottom: 5px; letter-spacing: 0.02em; text-transform: uppercase; }
+.ds-score-note { font-size: 14px; color: var(--muted); font-style: normal; font-weight: 400; line-height: 1.6; }
 
 /* SCROLL REVEALS */
 .ds-reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
@@ -344,18 +354,92 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .ds-mobile-nav-btn:hover { color: var(--accent); }
 .ds-mobile-nav-divider { width: 32px; height: 1px; background: var(--border); }
 @media (max-width: 768px) {
+  /* NAV */
   .ds-hamburger { display: flex; }
   .ds-nav-links { display: none !important; }
   .ds-account-wrap .ds-account-btn span:last-child { display: none; }
-  .ds-nav { padding: 16px 20px; } .ds-hero { padding: 52px 20px 60px; } .ds-hero-inner { grid-template-columns: 1fr; gap: 44px; }
-  .ds-section { padding: 64px 20px; } .ds-steps { grid-template-columns: 1fr; gap: 36px; } .ds-testi-grid { grid-template-columns: 1fr; gap: 24px; }
-  .ds-pricing { grid-template-columns: 1fr; } .ds-footer { padding: 28px 20px; flex-direction: column; gap: 16px; text-align: center; }
-  .ds-score-row { flex-direction: column; align-items: flex-start; gap: 12px; } .ds-modal { padding: 36px 24px; } .ds-modal-wide { padding: 32px 20px; }
-  .ds-legal { padding: 48px 20px 72px; } .ds-cookie { padding: 16px 20px; flex-direction: column; align-items: flex-start; gap: 16px; }
-  .spar-page { padding: 32px 20px 80px; } .spar-wall-ctas { flex-direction: column; }
-  .ds-gate-cards { grid-template-columns: 1fr; } .ds-proof { gap: 40px; padding: 28px 20px; }
-  /* Prevent iOS Safari zoom on input focus — must be 16px minimum */
+  .ds-nav { padding: 14px 20px; gap: 8px; }
+  .ds-logo { font-size: 12px; }
+  .ds-quiz-nav-pill { font-size: 11px; padding: 6px 12px; }
+  .ds-quiz-nav-pill::after { display: none; }
+
+  /* HERO */
+  .ds-hero { padding: 52px 20px 56px; background: none; }
+  .ds-hero-inner { grid-template-columns: 1fr; gap: 40px; }
+  .ds-hero-ctas { flex-direction: column; align-items: stretch; gap: 12px; }
+  .ds-hero-ctas .ds-btn-primary { text-align: center; padding: 16px 24px; }
+  .ds-hero-ctas .ds-btn-ghost { text-align: center; padding: 14px 24px; }
+  .ds-hero-free-note { text-align: center; }
+  .ds-eyebrow { font-size: 11px; }
+
+  /* PROOF BAR */
+  .ds-proof { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 12px; padding: 28px 20px; }
+  .ds-proof-num { font-size: 34px; }
+  .ds-proof-special { font-size: 28px; }
+  .ds-proof-label { font-size: 12px; max-width: 120px; }
+
+  /* SECTIONS */
+  .ds-section { padding: 64px 20px; }
+  .ds-section-lbl { margin-bottom: 32px; }
+  .ds-h2 { font-size: clamp(26px, 7vw, 38px); margin-bottom: 36px; }
+  .ds-steps { grid-template-columns: 1fr; gap: 32px; }
+  .ds-step-title { font-size: 20px; }
+
+  /* VERDICT SPLIT */
+  .ds-verdict-split { grid-template-columns: 1fr; }
+  .ds-verdict-image { height: 260px; order: -1; }
+  .ds-verdict-content { padding: 56px 20px; }
+
+  /* TESTIMONIALS */
+  .ds-testi-grid { grid-template-columns: 1fr; gap: 20px; }
+  .ds-testi { padding: 28px 24px; }
+
+  /* AUDIENCE */
+  .ds-aud-tabs { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 8px; scrollbar-width: none; gap: 6px; }
+  .ds-aud-tabs::-webkit-scrollbar { display: none; }
+  .ds-aud-tab { flex-shrink: 0; font-size: 12px; padding: 8px 16px; }
+  .ds-aud-hook { font-size: 22px; }
+  .ds-aud-body { font-size: 15px; }
+
+  /* PRICING */
+  .ds-pricing { grid-template-columns: 1fr; gap: 16px; }
+  .ds-plan { padding: 32px 24px; }
+
+  /* FOOTER */
+  .ds-footer { padding: 28px 20px; flex-direction: column; gap: 16px; text-align: center; }
+  .ds-footer-links { justify-content: center; gap: 16px; flex-wrap: wrap; }
+  .ds-footer-linkedin { justify-content: center; }
+
+  /* MODALS */
+  .ds-score-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .ds-modal { padding: 32px 20px; border-radius: 12px; margin: 16px; width: calc(100% - 32px); }
+  .ds-modal-wide { padding: 28px 20px; border-radius: 12px; }
+  .ds-gate-cards { grid-template-columns: 1fr; }
+
+  /* COOKIE */
+  .ds-legal { padding: 48px 20px 72px; }
+  .ds-cookie { padding: 16px 20px; flex-direction: column; align-items: flex-start; gap: 16px; }
+
+  /* SPARRING */
+  .spar-page { padding: 28px 16px 72px; }
+  .spar-wall-ctas { flex-direction: column; }
+  .spar-header { margin-bottom: 36px; }
+  .spar-prompt-title { font-size: 22px; }
+  .spar-verdict-actions { flex-direction: column; }
+
+  /* PAYMENT GATE */
+  .ds-gate-card { padding: 24px 20px; }
+  .ds-gate-btn-primary, .ds-gate-btn-outline { padding: 14px 16px; }
+
+  /* iOS input zoom prevention */
   .spar-textarea, .ds-input { font-size: 16px !important; }
+}
+
+@media (max-width: 400px) {
+  .ds-proof { grid-template-columns: 1fr 1fr; gap: 20px 8px; }
+  .ds-proof-num { font-size: 28px; }
+  .ds-proof-special { font-size: 24px; }
+  .ds-h1 { font-size: clamp(36px, 10vw, 52px); }
 }
 `;
 
@@ -930,7 +1014,7 @@ export default function LandingPage({ user: initialUser, authStatus }) {
           {user?.plan === "paid" ? (
             <>
               <button className="ds-mobile-nav-btn" onClick={() => { setMobileMenuOpen(false); goPage("spar"); }}>Start Sparring</button>
-              <button className="ds-mobile-nav-btn" onClick={() => { setMobileMenuOpen(false); goPage("quiz"); }}>Decision Style</button>
+              <button className="ds-mobile-nav-btn" style={{color:"var(--accent)",fontWeight:600}} onClick={() => { setMobileMenuOpen(false); goPage("quiz"); }}>✦ Take the free test</button>
               <div className="ds-mobile-nav-divider" />
               <button className="ds-mobile-nav-btn" onClick={() => { setMobileMenuOpen(false); openModal("history"); }}>Session History</button>
               <button className="ds-mobile-nav-btn" onClick={() => { setMobileMenuOpen(false); handleLogout(); }}>Sign Out</button>
@@ -953,8 +1037,7 @@ export default function LandingPage({ user: initialUser, authStatus }) {
         </div>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
           <button className="ds-quiz-nav-pill" onClick={() => goPage("quiz")}>
-              <span className="ds-quiz-dot" />
-              Decision Style
+              ✦ Take the free test
             </button>
           <button className="ds-hamburger" onClick={() => setMobileMenuOpen(true)} aria-label="Open menu">
             <span className="ds-hamburger-line"/>
@@ -1076,21 +1159,27 @@ export default function LandingPage({ user: initialUser, authStatus }) {
           </section>
 
           {/* VERDICT */}
-          <section className="ds-section ds-section-alt">
-            <div className="ds-section-inner">
-              <span className="ds-section-lbl ds-reveal">The verdict</span>
-              <h2 className="ds-h2 ds-reveal ds-reveal-d1">Four dimensions.<br />No softening.</h2>
-              <div className="ds-scores">
-                {SCORES_PREVIEW.map((s, idx) => (
-                  <div className={"ds-score-row ds-reveal ds-reveal-d" + (idx + 1)} key={s.label}>
-                    <div className="ds-score-meta">
-                      <span className="ds-score-lbl">{s.label}</span>
-                      <span className="ds-score-note">{s.note}</span>
+          <section className="ds-verdict-landing">
+            <div className="ds-verdict-split">
+              <div className="ds-verdict-content">
+                <span className="ds-section-lbl ds-reveal">The verdict</span>
+                <h2 className="ds-verdict-h2 ds-reveal ds-reveal-d1">
+                  <span className="ds-verdict-h2-accent">Four dimensions.</span>
+                  No softening.
+                </h2>
+                <div className="ds-scores">
+                  {SCORES_PREVIEW.map((s, idx) => (
+                    <div className={"ds-score-row ds-reveal ds-reveal-d" + (idx + 1)} key={s.label}>
+                      <div className="ds-score-meta">
+                        <span className="ds-score-lbl">{s.label}</span>
+                        <span className="ds-score-note">{s.note}</span>
+                      </div>
+                      {s.score !== null ? <Pips score={s.score} /> : <span className="ds-score-flag">Flagged</span>}
                     </div>
-                    {s.score !== null ? <Pips score={s.score} /> : <span className="ds-score-flag">Flagged</span>}
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
+              <div className="ds-verdict-image" style={{backgroundImage: "url('/verdict-bg.jpg')"}} />
             </div>
           </section>
 
