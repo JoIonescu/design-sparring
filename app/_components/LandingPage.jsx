@@ -299,6 +299,8 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .ds-aud-body { font-size: 16px; color: var(--muted); line-height: 1.9; font-weight: 400; max-width: 600px; }
 
 /* LINKEDIN FOOTER LINK */
+.ds-footer-email { font-size: 13px; color: rgba(249,247,242,0.5); text-decoration: none; transition: color 0.2s; font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; }
+.ds-footer-email:hover { color: var(--bg); }
 .ds-footer-linkedin { display: flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(249,247,242,0.5); text-decoration: none; transition: color 0.2s; font-family: var(--sans); font-weight: 400; }
 .ds-footer-linkedin:hover { color: var(--bg); }
 .ds-footer-linkedin svg { flex-shrink: 0; }
@@ -309,20 +311,20 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 @keyframes fade-up { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
 
 /* QUIZ NAV BUTTON */
-.ds-quiz-nav-pill { display: inline-flex; align-items: center; gap: 7px; background: var(--accent); border: none; border-radius: 100px; cursor: pointer; font-family: var(--sans); font-size: 13px; font-weight: 600; color: #fff; padding: 8px 18px; position: relative; overflow: hidden; white-space: nowrap; transition: opacity 0.2s, transform 0.15s; }
-.ds-quiz-nav-pill:hover { opacity: 0.88; transform: translateY(-1px); }
-.ds-quiz-nav-pill::after { content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.28), transparent); animation: nav-shine 3.5s ease-in-out infinite 1s; pointer-events: none; }
-@keyframes nav-shine { 0% { left: -100%; } 35%,100% { left: 160%; } }
+.ds-quiz-nav-pill { display: inline-flex; align-items: center; gap: 7px; background: transparent; border: 2px solid var(--accent); border-radius: 100px; cursor: pointer; font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--accent); padding: 7px 18px; white-space: nowrap; animation: pill-pulse 2s ease-in-out infinite; transition: background 0.2s, color 0.2s; }
+.ds-quiz-nav-pill:hover { background: var(--accent); color: #fff; animation: none; box-shadow: none; }
+@keyframes pill-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(198,59,21,0.5); } 55% { box-shadow: 0 0 0 8px rgba(198,59,21,0); } }
 .ds-quiz-dot { display: none; }
 
 /* VERDICT TWO-COLUMN SPLIT */
-.ds-verdict-landing { overflow: hidden; }
-.ds-verdict-split { display: grid; grid-template-columns: 1fr 1fr; min-height: 640px; }
-.ds-verdict-content { padding: 96px 60px; display: flex; flex-direction: column; justify-content: center; background: var(--bg); }
-.ds-verdict-image { background-size: cover; background-position: center; background-color: #1A1714; min-height: 400px; }
-.ds-verdict-h2 { font-family: var(--display); font-size: clamp(32px, 4vw, 52px); font-weight: 700; line-height: 1.1; margin-bottom: 48px; letter-spacing: -0.02em; }
-.ds-verdict-h2-accent { color: var(--accent); display: block; }
-.ds-score-lbl { font-family: var(--display); font-size: 17px; font-weight: 700; display: block; margin-bottom: 5px; letter-spacing: 0.02em; text-transform: uppercase; }
+.ds-verdict-landing { overflow: hidden; position: relative; }
+.ds-verdict-split { display: grid; grid-template-columns: 1fr 1fr; align-items: stretch; min-height: 640px; }
+.ds-verdict-content { padding: 96px 64px; display: flex; flex-direction: column; justify-content: center; background: var(--bg); }
+.ds-verdict-image { background-size: cover; background-position: center; background-color: #111; min-height: 640px; }
+.ds-verdict-h2 { font-family: var(--display); font-size: clamp(32px, 4vw, 52px); font-weight: 700; line-height: 1.15; margin-bottom: 48px; letter-spacing: -0.02em; }
+.ds-verdict-line1 { color: var(--accent); display: block; }
+.ds-verdict-line2 { color: var(--ink); display: block; }
+.ds-score-lbl { font-family: var(--display) !important; font-size: 16px !important; font-weight: 700 !important; display: block !important; margin-bottom: 5px !important; letter-spacing: 0.03em !important; text-transform: uppercase !important; }
 .ds-score-note { font-size: 14px; color: var(--muted); font-style: normal; font-weight: 400; line-height: 1.6; }
 
 /* SCROLL REVEALS */
@@ -354,92 +356,136 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .ds-mobile-nav-btn:hover { color: var(--accent); }
 .ds-mobile-nav-divider { width: 32px; height: 1px; background: var(--border); }
 @media (max-width: 768px) {
-  /* NAV */
+
+  /* ── NAV ──────────────────────────────────────── */
+  .ds-nav { padding: 12px 16px; gap: 8px; }
+  .ds-logo { font-size: 11px; letter-spacing: 0.1em; }
   .ds-hamburger { display: flex; }
   .ds-nav-links { display: none !important; }
-  .ds-account-wrap .ds-account-btn span:last-child { display: none; }
-  .ds-nav { padding: 14px 20px; gap: 8px; }
-  .ds-logo { font-size: 12px; }
-  .ds-quiz-nav-pill { font-size: 11px; padding: 6px 12px; }
-  .ds-quiz-nav-pill::after { display: none; }
+  .ds-quiz-nav-pill { font-size: 11px; padding: 6px 13px; animation: none; border-width: 1.5px; }
+  .ds-account-wrap .ds-account-btn { padding: 6px 10px; }
 
-  /* HERO */
-  .ds-hero { padding: 52px 20px 56px; background: none; }
-  .ds-hero-inner { grid-template-columns: 1fr; gap: 40px; }
-  .ds-hero-ctas { flex-direction: column; align-items: stretch; gap: 12px; }
-  .ds-hero-ctas .ds-btn-primary { text-align: center; padding: 16px 24px; }
-  .ds-hero-ctas .ds-btn-ghost { text-align: center; padding: 14px 24px; }
-  .ds-hero-free-note { text-align: center; }
-  .ds-eyebrow { font-size: 11px; }
+  /* ── HERO ─────────────────────────────────────── */
+  .ds-hero { padding: 44px 20px 52px; background: none; }
+  .ds-hero-inner { grid-template-columns: 1fr; gap: 36px; }
+  .ds-h1 { font-size: clamp(36px, 9.5vw, 54px); margin-bottom: 20px; }
+  .ds-eyebrow { font-size: 11px; margin-bottom: 20px; }
+  .ds-hero-sub { font-size: 15px; line-height: 1.75; margin-bottom: 28px; }
+  .ds-hero-ctas { flex-direction: column; align-items: stretch; gap: 10px; }
+  .ds-hero-ctas .ds-btn-primary { text-align: center; padding: 18px 20px; align-self: stretch; }
+  .ds-hero-ctas .ds-btn-ghost { text-align: center; padding: 15px 20px; align-self: stretch; display: block; }
+  .ds-hero-free-note { text-align: center; margin-top: 8px; }
+  .ds-carousel-card { padding: 20px 18px; }
+  .ds-carousel-dots { margin-top: 10px; }
 
-  /* PROOF BAR */
-  .ds-proof { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 12px; padding: 28px 20px; }
+  /* ── PROOF BAR ─────────────────────────────────── */
+  .ds-proof { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 12px; padding: 28px 20px; }
+  .ds-proof-item { align-items: center; }
   .ds-proof-num { font-size: 34px; }
   .ds-proof-special { font-size: 28px; }
-  .ds-proof-label { font-size: 12px; max-width: 120px; }
+  .ds-proof-label { font-size: 11px; max-width: none; text-align: center; }
 
-  /* SECTIONS */
-  .ds-section { padding: 64px 20px; }
-  .ds-section-lbl { margin-bottom: 32px; }
-  .ds-h2 { font-size: clamp(26px, 7vw, 38px); margin-bottom: 36px; }
-  .ds-steps { grid-template-columns: 1fr; gap: 32px; }
+  /* ── SECTIONS ──────────────────────────────────── */
+  .ds-section { padding: 60px 20px; }
+  .ds-section-lbl { font-size: 11px; margin-bottom: 28px; }
+  .ds-section-lbl::before { width: 14px; }
+  .ds-h2 { font-size: clamp(24px, 7.5vw, 38px); margin-bottom: 32px; line-height: 1.15; }
+
+  /* ── HOW IT WORKS ──────────────────────────────── */
+  .ds-steps { grid-template-columns: 1fr; gap: 32px; padding-top: 20px; }
+  .ds-step-num { width: 36px; height: 36px; font-size: 11px; margin-bottom: 16px; }
   .ds-step-title { font-size: 20px; }
+  .ds-step-body { font-size: 15px; }
 
-  /* VERDICT SPLIT */
-  .ds-verdict-split { grid-template-columns: 1fr; }
-  .ds-verdict-image { height: 260px; order: -1; }
-  .ds-verdict-content { padding: 56px 20px; }
+  /* ── VERDICT ───────────────────────────────────── */
+  .ds-verdict-split { grid-template-columns: 1fr !important; }
+  .ds-verdict-image { min-height: 240px !important; height: 240px; order: -1; }
+  .ds-verdict-content { padding: 48px 20px; }
+  .ds-verdict-h2 { font-size: clamp(26px, 8vw, 40px); margin-bottom: 28px; }
+  .ds-score-row { padding: 16px 0; gap: 8px; }
+  .ds-score-lbl { font-size: 14px !important; }
+  .ds-score-flag { font-size: 12px; }
 
-  /* TESTIMONIALS */
-  .ds-testi-grid { grid-template-columns: 1fr; gap: 20px; }
-  .ds-testi { padding: 28px 24px; }
+  /* ── TESTIMONIALS ──────────────────────────────── */
+  .ds-testi-grid { grid-template-columns: 1fr; gap: 16px; }
+  .ds-testi { padding: 24px 20px; }
+  .ds-testi-quote { font-size: 14px; line-height: 1.8; }
+  .ds-testi-mark { font-size: 40px; }
 
-  /* AUDIENCE */
-  .ds-aud-tabs { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 8px; scrollbar-width: none; gap: 6px; }
+  /* ── AUDIENCE SECTION ──────────────────────────── */
+  .ds-aud-tabs { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 8px; -webkit-overflow-scrolling: touch; scrollbar-width: none; gap: 6px; }
   .ds-aud-tabs::-webkit-scrollbar { display: none; }
-  .ds-aud-tab { flex-shrink: 0; font-size: 12px; padding: 8px 16px; }
-  .ds-aud-hook { font-size: 22px; }
-  .ds-aud-body { font-size: 15px; }
+  .ds-aud-tab { flex-shrink: 0; white-space: nowrap; font-size: 12px; padding: 8px 16px; }
+  .ds-aud-hook { font-size: 20px; line-height: 1.2; }
+  .ds-aud-body { font-size: 15px; line-height: 1.85; }
 
-  /* PRICING */
-  .ds-pricing { grid-template-columns: 1fr; gap: 16px; }
-  .ds-plan { padding: 32px 24px; }
+  /* ── PRICING ───────────────────────────────────── */
+  .ds-pricing { grid-template-columns: 1fr; gap: 14px; }
+  .ds-plan { padding: 28px 22px; }
+  .ds-plan-name { font-size: 22px; }
+  .ds-plan-dark { order: -1; }
+  .ds-btn-primary { align-self: stretch; text-align: center; }
+  .ds-btn-outline { align-self: stretch; text-align: center; }
 
-  /* FOOTER */
-  .ds-footer { padding: 28px 20px; flex-direction: column; gap: 16px; text-align: center; }
-  .ds-footer-links { justify-content: center; gap: 16px; flex-wrap: wrap; }
+  /* ── FOOTER ────────────────────────────────────── */
+  .ds-footer { flex-direction: column; align-items: center; padding: 32px 20px; gap: 18px; text-align: center; }
+  .ds-footer-links { justify-content: center; gap: 14px; flex-wrap: wrap; }
   .ds-footer-linkedin { justify-content: center; }
+  .ds-footer-copy { order: 3; }
 
-  /* MODALS */
-  .ds-score-row { flex-direction: column; align-items: flex-start; gap: 10px; }
-  .ds-modal { padding: 32px 20px; border-radius: 12px; margin: 16px; width: calc(100% - 32px); }
-  .ds-modal-wide { padding: 28px 20px; border-radius: 12px; }
+  /* ── MODALS ────────────────────────────────────── */
+  .ds-overlay { padding: 0; align-items: flex-end; }
+  .ds-modal { border-radius: 16px 16px 0 0; max-height: 88vh; width: 100%; max-width: 100%; padding: 32px 20px 44px; margin: 0; }
+  .ds-modal-wide { border-radius: 16px 16px 0 0; max-height: 92vh; overflow-y: auto; max-width: 100%; width: 100%; padding: 28px 20px 40px; }
   .ds-gate-cards { grid-template-columns: 1fr; }
+  .ds-gate-card { padding: 22px 18px; }
+  .ds-gate-title { font-size: 22px; }
+  .ds-modal-title { font-size: 24px; }
+  .ds-score-row { flex-direction: row; flex-wrap: wrap; }
+  .ds-history-row { gap: 8px; }
+  .ds-history-title { font-size: 12px; }
 
-  /* COOKIE */
-  .ds-legal { padding: 48px 20px 72px; }
-  .ds-cookie { padding: 16px 20px; flex-direction: column; align-items: flex-start; gap: 16px; }
-
-  /* SPARRING */
-  .spar-page { padding: 28px 16px 72px; }
+  /* ── SPARRING ──────────────────────────────────── */
+  .spar-page { padding: 24px 16px 80px; }
+  .spar-header { margin-bottom: 28px; padding-bottom: 16px; }
+  .spar-prompt-title { font-size: 20px; }
+  .spar-prompt-sub { font-size: 14px; }
+  .spar-prog-pip { width: 24px; }
+  .spar-prog-label { font-size: 10px; }
+  .spar-turn { padding: 20px 0; }
+  .spar-turn-text { font-size: 14px; }
+  .spar-wall { padding: 28px 20px; }
   .spar-wall-ctas { flex-direction: column; }
-  .spar-header { margin-bottom: 36px; }
-  .spar-prompt-title { font-size: 22px; }
   .spar-verdict-actions { flex-direction: column; }
+  .spar-verdict-summary { font-size: 14px; padding: 18px; }
 
-  /* PAYMENT GATE */
-  .ds-gate-card { padding: 24px 20px; }
-  .ds-gate-btn-primary, .ds-gate-btn-outline { padding: 14px 16px; }
+  /* ── LEGAL ─────────────────────────────────────── */
+  .ds-legal { padding: 40px 20px 64px; }
+  .ds-legal-title { font-size: clamp(26px, 8vw, 38px); }
 
-  /* iOS input zoom prevention */
-  .spar-textarea, .ds-input { font-size: 16px !important; }
+  /* ── COOKIE ────────────────────────────────────── */
+  .ds-cookie { padding: 16px 20px; flex-direction: column; gap: 14px; align-items: flex-start; }
+  .ds-cookie-actions { width: 100%; justify-content: space-between; }
+
+  /* ── iOS INPUT ZOOM PREVENTION ─────────────────── */
+  .spar-textarea, .ds-input, input[type="email"] { font-size: 16px !important; }
+
+  /* ── TOUCH TARGETS (min 44px) ──────────────────── */
+  .ds-btn-primary, .ds-btn-outline, .ds-btn-ghost, .ds-cta-sm { min-height: 48px; display: flex; align-items: center; justify-content: center; }
+  .ds-dropdown-item { min-height: 48px; display: flex; align-items: center; }
+  .ds-carousel-dot { width: 10px; height: 10px; }
 }
 
 @media (max-width: 400px) {
-  .ds-proof { grid-template-columns: 1fr 1fr; gap: 20px 8px; }
+  .ds-nav { padding: 10px 14px; }
+  .ds-logo { font-size: 10px; }
+  .ds-proof { gap: 16px 8px; padding: 24px 16px; }
   .ds-proof-num { font-size: 28px; }
   .ds-proof-special { font-size: 24px; }
-  .ds-h1 { font-size: clamp(36px, 10vw, 52px); }
+  .ds-h1 { font-size: clamp(32px, 10vw, 44px); }
+  .ds-hero { padding: 36px 16px 44px; }
+  .ds-section { padding: 48px 16px; }
+  .ds-verdict-content { padding: 40px 16px; }
 }
 `;
 
@@ -629,18 +675,88 @@ function useScrollReveal(deps) {
 }
 
 function downloadSession(session) {
+  const dateStr = session.created_at
+    ? new Date(session.created_at).toLocaleDateString("en-GB", { year: "numeric", month: "long", day: "numeric" })
+    : "Unknown date";
+
+  const verdict = session.verdict
+    ? (typeof session.verdict === "string" ? JSON.parse(session.verdict) : session.verdict)
+    : null;
+
+  const exchanges = session.exchanges
+    ? (typeof session.exchanges === "string" ? JSON.parse(session.exchanges) : session.exchanges)
+    : [];
+
+  let scoreDisplay = "No verdict";
+  if (verdict && verdict.clarity && verdict.userImpact && verdict.defensibility) {
+    const avg = Math.round((verdict.clarity + verdict.userImpact + verdict.defensibility) / 3);
+    scoreDisplay = avg + " / 5";
+  }
+
+  const SEP = "=".repeat(52);
+  const DIV = "-".repeat(40);
   const lines = [
-    "DESIGN SPARRING - SESSION RECORD", "=".repeat(44), "",
-    "Title:  " + session.title, "Date:   " + session.created_at || session.date,
-    "Score:  " + (session.score || "N/A") + " / 5", "",
-    "-".repeat(44), "RATIONALE", "-".repeat(44), session.rationale, "",
-    "=".repeat(44), "design-sparring.vercel.app",
+    "DESIGN SPARRING — SESSION RECORD",
+    SEP, "",
+    "Date:   " + dateStr,
+    "Score:  " + scoreDisplay,
+    "", SEP,
+    "YOUR RATIONALE",
+    SEP,
+    session.rationale || "",
+    "",
   ];
+
+  if (exchanges.length > 0) {
+    lines.push(SEP);
+    lines.push("FULL EXCHANGE");
+    lines.push(SEP);
+    lines.push("");
+    exchanges.forEach((ex) => {
+      if (ex.role === "counter") {
+        lines.push("THE COUNTER — Round " + ex.round);
+        lines.push(DIV);
+        lines.push(ex.text);
+        lines.push("");
+      } else if (ex.role === "user") {
+        lines.push("YOUR DEFENSE — Round " + ex.round);
+        lines.push(DIV);
+        lines.push(ex.text);
+        lines.push("");
+      }
+    });
+  }
+
+  if (verdict) {
+    lines.push(SEP);
+    lines.push("THE VERDICT");
+    lines.push(SEP);
+    lines.push("");
+    if (verdict.clarity)       lines.push("Clarity:        " + verdict.clarity + " / 5");
+    if (verdict.userImpact)    lines.push("User Impact:    " + verdict.userImpact + " / 5");
+    if (verdict.defensibility) lines.push("Defensibility:  " + verdict.defensibility + " / 5");
+    if (verdict.blindSpots?.length) {
+      lines.push("");
+      lines.push("Blind Spots:");
+      verdict.blindSpots.forEach((b) => lines.push("  x " + b));
+    }
+    if (verdict.summary) {
+      lines.push("");
+      lines.push("Summary:");
+      lines.push(verdict.summary);
+    }
+    lines.push("");
+  }
+
+  lines.push(SEP);
+  lines.push("design-sparring.org");
+
+  const slug = dateStr.replace(/\s+/g, "-").toLowerCase();
   const blob = new Blob([lines.join("\n")], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = "sparring-" + (session.title || "session").toLowerCase().replace(/\s+/g, "-") + ".txt";
+  a.download = "sparring-" + slug + ".txt";
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -837,9 +953,9 @@ function LegalPage({ page, onBack }) {
   return (
     <div className="ds-legal">
       <button className="ds-back-btn" onClick={onBack}>Back</button>
-      {page === "privacy" && <><h1 className="ds-legal-title">Privacy Policy</h1><span className="ds-legal-date">Effective date: May 2026</span><h2>What this is</h2><p>Design Sparring collects the minimum information necessary to provide the service.</p><h2>What we collect</h2><p>We collect your email address when you create an account, used solely for authentication via magic links. We store your sparring session data for up to 30 days on the paid tier.</p><h2>How we use your data</h2><ul><li>To send you a magic link for authentication</li><li>To associate your sessions with your account</li><li>To process payments securely through our payment provider</li></ul><h2>Data retention</h2><p>Your account is retained until you delete it. Session data is deleted automatically after 30 days.</p><h2>Contact</h2><p><a href="mailto:privacy@design-sparring.org">privacy@design-sparring.org</a></p></>}
-      {page === "terms" && <><h1 className="ds-legal-title">Terms of Service</h1><span className="ds-legal-date">Effective date: May 2026</span><h2>Acceptance</h2><p>By creating an account or using Design Sparring, you agree to these terms.</p><h2>What the service is</h2><p>Design Sparring provides AI-generated counter-arguments and structured scoring for design decisions. It is a decision-support tool, not professional advice.</p><h2>Accounts and billing</h2><p>Accounts are available on the paid plan only. Cancel anytime. No refunds for partial months.</p><h2>Free tier</h2><p>The free tier (1 round, no account) is available without registration. No session data is retained.</p><h2>Contact</h2><p><a href="mailto:legal@design-sparring.org">legal@design-sparring.org</a></p></>}
-      {page === "cookies" && <><h1 className="ds-legal-title">Cookie Policy</h1><span className="ds-legal-date">Effective date: May 2026</span><h2>What we use</h2><p>Design Sparring uses only essential cookies. No advertising, no cross-site tracking.</p><ul><li>Session cookie - keeps you authenticated</li><li>CSRF token - security against cross-site request forgery</li><li>Cookie consent - stores your preference</li></ul><h2>Contact</h2><p><a href="mailto:privacy@design-sparring.org">privacy@design-sparring.org</a></p></>}
+      {page === "privacy" && <><h1 className="ds-legal-title">Privacy Policy</h1><span className="ds-legal-date">Effective date: May 2026</span><h2>What this is</h2><p>Design Sparring collects the minimum information necessary to provide the service.</p><h2>What we collect</h2><p>We collect your email address when you create an account, used solely for authentication via magic links. We store your sparring session data for up to 30 days on the paid tier.</p><h2>How we use your data</h2><ul><li>To send you a magic link for authentication</li><li>To associate your sessions with your account</li><li>To process payments securely through our payment provider</li></ul><h2>Data retention</h2><p>Your account is retained until you delete it. Session data is deleted automatically after 30 days.</p><h2>Contact</h2><p><a href="mailto:contact@design-sparring.org">contact@design-sparring.org</a></p></>}
+      {page === "terms" && <><h1 className="ds-legal-title">Terms of Service</h1><span className="ds-legal-date">Effective date: May 2026</span><h2>Acceptance</h2><p>By creating an account or using Design Sparring, you agree to these terms.</p><h2>What the service is</h2><p>Design Sparring provides AI-generated counter-arguments and structured scoring for design decisions. It is a decision-support tool, not professional advice.</p><h2>Accounts and billing</h2><p>Accounts are available on the paid plan only. Cancel anytime. No refunds for partial months.</p><h2>Free tier</h2><p>The free tier (1 round, no account) is available without registration. No session data is retained.</p><h2>Contact</h2><p><a href="mailto:contact@design-sparring.org">contact@design-sparring.org</a></p></>}
+      {page === "cookies" && <><h1 className="ds-legal-title">Cookie Policy</h1><span className="ds-legal-date">Effective date: May 2026</span><h2>What we use</h2><p>Design Sparring uses only essential cookies. No advertising, no cross-site tracking.</p><ul><li>Session cookie - keeps you authenticated</li><li>CSRF token - security against cross-site request forgery</li><li>Cookie consent - stores your preference</li></ul><h2>Contact</h2><p><a href="mailto:contact@design-sparring.org">contact@design-sparring.org</a></p></>}
     </div>
   );
 }
@@ -985,6 +1101,11 @@ export default function LandingPage({ user: initialUser, authStatus }) {
     }
   };
 
+  const handleDeleteSession = async (sessionId) => {
+    const res = await fetch("/api/sessions?id=" + sessionId, { method: "DELETE" });
+    if (res.ok) setSessions((prev) => prev.filter((s) => s.id !== sessionId));
+  };
+
   const handleCancelSub = async () => {
     const res = await fetch("/api/stripe/portal", { method: "POST" });
     const data = await res.json();
@@ -1014,7 +1135,7 @@ export default function LandingPage({ user: initialUser, authStatus }) {
           {user?.plan === "paid" ? (
             <>
               <button className="ds-mobile-nav-btn" onClick={() => { setMobileMenuOpen(false); goPage("spar"); }}>Start Sparring</button>
-              <button className="ds-mobile-nav-btn" style={{color:"var(--accent)",fontWeight:600}} onClick={() => { setMobileMenuOpen(false); goPage("quiz"); }}>✦ Take the free test</button>
+              <button className="ds-mobile-nav-btn" style={{color:"var(--accent)",fontWeight:600}} onClick={() => { setMobileMenuOpen(false); goPage("quiz"); }}>Take the test</button>
               <div className="ds-mobile-nav-divider" />
               <button className="ds-mobile-nav-btn" onClick={() => { setMobileMenuOpen(false); openModal("history"); }}>Session History</button>
               <button className="ds-mobile-nav-btn" onClick={() => { setMobileMenuOpen(false); handleLogout(); }}>Sign Out</button>
@@ -1037,7 +1158,7 @@ export default function LandingPage({ user: initialUser, authStatus }) {
         </div>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
           <button className="ds-quiz-nav-pill" onClick={() => goPage("quiz")}>
-              ✦ Take the free test
+              Take the test
             </button>
           <button className="ds-hamburger" onClick={() => setMobileMenuOpen(true)} aria-label="Open menu">
             <span className="ds-hamburger-line"/>
@@ -1164,8 +1285,8 @@ export default function LandingPage({ user: initialUser, authStatus }) {
               <div className="ds-verdict-content">
                 <span className="ds-section-lbl ds-reveal">The verdict</span>
                 <h2 className="ds-verdict-h2 ds-reveal ds-reveal-d1">
-                  <span className="ds-verdict-h2-accent">Four dimensions.</span>
-                  No softening.
+                  <span className="ds-verdict-line1">Four dimensions.</span>
+                  <span className="ds-verdict-line2">No softening.</span>
                 </h2>
                 <div className="ds-scores">
                   {SCORES_PREVIEW.map((s, idx) => (
@@ -1245,6 +1366,7 @@ export default function LandingPage({ user: initialUser, authStatus }) {
           <button onClick={() => goPage("privacy")}>Privacy</button>
           <button onClick={() => goPage("terms")}>Terms</button>
           <button onClick={() => goPage("cookies")}>Cookies</button>
+          <a href="mailto:contact@design-sparring.org" className="ds-footer-email">contact@design-sparring.org</a>
           <a
             href="https://www.linkedin.com/company/design-decision"
             target="_blank"
@@ -1377,8 +1499,9 @@ export default function LandingPage({ user: initialUser, authStatus }) {
                           <span className="ds-history-date">{new Date(s.created_at).toLocaleDateString()}</span>
                         </div>
                         <div className="ds-history-right">
-                          {s.verdict && <Pips score={Math.round((s.verdict.clarity + s.verdict.userImpact + s.verdict.defensibility) / 3)} size="sm" />}
-                          <button className="ds-download-btn" onClick={() => downloadSession(s)}>Save</button>
+                          {s.verdict && <Pips score={Math.round(((typeof s.verdict === "string" ? JSON.parse(s.verdict) : s.verdict).clarity + (typeof s.verdict === "string" ? JSON.parse(s.verdict) : s.verdict).userImpact + (typeof s.verdict === "string" ? JSON.parse(s.verdict) : s.verdict).defensibility) / 3)} size="sm" />}
+                          <button className="ds-download-btn" onClick={() => downloadSession(s)}>Download</button>
+                          <button className="ds-delete-session-btn" onClick={() => handleDeleteSession(s.id)} title="Delete session">×</button>
                         </div>
                       </div>
                     ))}
