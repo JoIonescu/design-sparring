@@ -37,3 +37,19 @@ export async function POST(request) {
   `
   return NextResponse.json({ ok: true, id: saved.id })
 }
+
+export async function DELETE(request) {
+  const session = await getSession()
+  if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+  const { searchParams } = new URL(request.url)
+  const sessionId = searchParams.get('id')
+  if (!sessionId) return NextResponse.json({ error: 'Session ID required' }, { status: 400 })
+
+  // Only delete if it belongs to this user
+  await sql`
+    DELETE FROM spar_sessions
+    WHERE id = ${sessionId} AND user_id = ${session.sub}
+  `
+  return NextResponse.json({ ok: true })
+}
