@@ -665,17 +665,8 @@ export default function LandingPage({ user: initialUser, authStatus }) {
           <DSLogo size={26} />
           <span className="ds-logo">Design Sparring</span>
         </div>
-        <div style={{display:"flex",alignItems:"center",gap:8}}>
-          <button className="ds-quiz-nav-pill" onClick={() => goPage("quiz")}>
-              Take the test
-            </button>
-          <button className="ds-hamburger" onClick={() => setMobileMenuOpen(true)} aria-label="Open menu">
-            <span className="ds-hamburger-line"/>
-            <span className="ds-hamburger-line"/>
-            <span className="ds-hamburger-line"/>
-          </button>
-        </div>
-        <div>
+        <div style={{display:"flex",alignItems:"center",gap:12}}>
+          <button className="ds-quiz-nav-pill" onClick={() => goPage("quiz")}>Take a test: your decision style</button>
           {user && user.plan === "paid" ? (
             <div className="ds-account-wrap" onClick={(e) => e.stopPropagation()}>
               <button className="ds-account-btn" onClick={() => setAcctOpen(!acctOpen)}>
@@ -702,6 +693,11 @@ export default function LandingPage({ user: initialUser, authStatus }) {
               <button className="ds-cta-sm" onClick={() => openModal("signup")}>Get full access</button>
             </div>
           )}
+          <button className="ds-hamburger" onClick={() => setMobileMenuOpen(true)} aria-label="Open menu">
+            <span className="ds-hamburger-line"/>
+            <span className="ds-hamburger-line"/>
+            <span className="ds-hamburger-line"/>
+          </button>
         </div>
       </nav>
 

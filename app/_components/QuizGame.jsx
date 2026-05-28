@@ -165,9 +165,9 @@ const QUESTIONS = [
     {letter:"D", text:"Wait — you need more context before making a call this important", style:"A"},
   ]},
   { id:2, illus:"debate", text:"A stakeholder disagrees with a design decision you believe in. You...", options:[
-    {letter:"A", text:"Back it up methodically — research, data, and documented rationale", style:"R"},
-    {letter:"B", text:"Stand your ground. Your instinct says it is right and you are comfortable defending it", style:"I"},
-    {letter:"C", text:"Offer to revisit it together. Their perspective might improve it", style:"D"},
+    {letter:"A", text:"Stand your ground — your instinct says it is right and you are comfortable defending it", style:"I"},
+    {letter:"B", text:"Back it up methodically — research, data, and documented rationale", style:"R"},
+    {letter:"C", text:"Offer to revisit it together and incorporate their perspective", style:"D"},
     {letter:"D", text:"Suggest going back to the drawing board to explore all options again", style:"A"},
   ]},
   { id:3, illus:"process", text:"Which best describes how you typically work through a design problem?", options:[
@@ -177,10 +177,10 @@ const QUESTIONS = [
     {letter:"D", text:"Spontaneously — I jump in and figure it out through doing", style:"S"},
   ]},
   { id:4, illus:"clock", text:"A deadline forces a decision before you feel fully ready. You...", options:[
-    {letter:"A", text:"Make the most rational call given the available information — documented and defensible", style:"R"},
-    {letter:"B", text:"Go with your gut and commit fully. You have been here before", style:"I"},
-    {letter:"C", text:"Quickly check in with two or three people whose judgment you trust", style:"D"},
-    {letter:"D", text:"Feel genuinely uncomfortable. Rushed decisions tend to create problems downstream", style:"A"},
+    {letter:"A", text:"Quickly check in with someone whose judgment you trust before committing", style:"D"},
+    {letter:"B", text:"Go with your gut and commit fully — you have navigated this before", style:"I"},
+    {letter:"C", text:"Make the most defensible call given available information and document it", style:"R"},
+    {letter:"D", text:"Feel genuinely uncomfortable — rushed decisions tend to cost more later", style:"A"},
   ]},
   { id:5, illus:"insight", text:"The best design decisions you have made usually came from...", options:[
     {letter:"A", text:"Thorough analysis, structured exploration, and a solid evidence base", style:"R"},
@@ -189,10 +189,10 @@ const QUESTIONS = [
     {letter:"D", text:"Acting quickly, shipping something, and learning from what came back", style:"S"},
   ]},
   { id:6, illus:"review", text:"A design review has challenged everything you built. You...", options:[
-    {letter:"A", text:"Return to your research to validate or invalidate the critique point by point", style:"R"},
-    {letter:"B", text:"Trust your original vision. You can defend it and you know why it is right", style:"I"},
-    {letter:"C", text:"Appreciate the input. If multiple people raised it, it is worth a serious rethink", style:"D"},
-    {letter:"D", text:"Feel genuinely overwhelmed and unsure how to move forward constructively", style:"A"},
+    {letter:"A", text:"Feel genuinely overwhelmed — too many contradicting voices make it hard to move", style:"A"},
+    {letter:"B", text:"Appreciate the input. Multiple people raising it means a serious rethink is needed", style:"D"},
+    {letter:"C", text:"Trust your original vision — you can defend it and you know why it is right", style:"I"},
+    {letter:"D", text:"Return to your research to validate or invalidate each point of the critique", style:"R"},
   ]},
   { id:7, illus:"fork", text:"You have two equally valid design directions in front of you. You...", options:[
     {letter:"A", text:"Build a decision framework — score both against defined criteria and pick the winner", style:"R"},
@@ -259,6 +259,8 @@ const RESULTS = {
 };
 
 const STYLE_NAMES = {R:"Rational",I:"Intuitive",D:"Dependent",A:"Avoidant",S:"Spontaneous"};
+// How many questions each style appears in (for normalized scoring)
+const STYLE_MAX = {R:8,I:8,D:7,A:6,S:7};
 
 function computeScores(answers) {
   const s = {R:0,I:0,D:0,A:0,S:0};
@@ -267,7 +269,14 @@ function computeScores(answers) {
 }
 
 function getWinner(scores) {
-  return Object.entries(scores).reduce((a,b) => b[1] > a[1] ? b : a)[0];
+  // Normalize: score divided by how many questions that style appeared in
+  // This prevents R from winning just because it appears in more questions
+  const normalized = Object.entries(scores).map(([style, score]) => ({
+    style,
+    score,
+    norm: score / (STYLE_MAX[style] || 1),
+  }));
+  return normalized.reduce((a,b) => b.norm > a.norm ? b : a).style;
 }
 
 export default function QuizGame({ onClose }) {
