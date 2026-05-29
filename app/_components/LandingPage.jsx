@@ -492,22 +492,36 @@ export default function LandingPage({ user: initialUser, authStatus }) {
   const router = useRouter();
 
   useEffect(() => {
-    // Check cookie consent from localStorage
     const stored = localStorage.getItem("ds_cookies_consent");
     if (!stored) setCookiesAccepted(false);
-    // Inject minimal mobile nav overrides
     const s = document.createElement("style");
-    s.id = "ds-mobile-overrides";
+    s.id = "ds-overrides";
     s.textContent = `
-  /* mobile nav overrides */
-  @media (max-width: 768px) {
-    .ds-quiz-nav-pill { font-size: 11px; padding: 5px 10px; white-space: normal; text-align: center; line-height: 1.3; max-width: 110px; }
-    .ds-account-btn .ds-avatar + * { display: none; }
-    .ds-account-btn { padding: 6px 10px; }
-    .ds-nav { gap: 6px; padding: 12px 14px; }
-  }
+/* score rows tighter */
+.ds-score-row { padding: 12px 0 !important; }
+
+/* mobile nav */
+@media (max-width: 768px) {
+  .ds-quiz-nav-pill { font-size: 11px; padding: 5px 10px; white-space: normal; text-align: center; line-height: 1.3; max-width: 110px; }
+  .ds-account-btn .ds-avatar + * { display: none; }
+  .ds-account-btn { padding: 6px 10px; }
+  .ds-nav { gap: 6px; padding: 12px 14px; }
+}
+/* desktop footer */
+.ds-f-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; width: 100%; }
+.ds-f-social { display: flex; align-items: center; gap: 24px; justify-content: center; }
+.ds-f-legal { display: flex; gap: 18px; align-items: center; justify-content: center; }
+.ds-f-rights { text-align: right; }
+/* mobile footer */
+@media (max-width: 768px) {
+  .ds-f-row { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
+  .ds-f-row .ds-logo-wrap { justify-content: center; }
+  .ds-f-social { flex-direction: column; gap: 10px; align-items: center; }
+  .ds-f-rights { text-align: center; }
+  .ds-f-spacer { display: none; }
+}
 `;
-    if (!document.getElementById("ds-mobile-overrides")) document.head.appendChild(s);
+    if (!document.getElementById("ds-overrides")) document.head.appendChild(s);
     return () => { try { document.head.removeChild(s); } catch {} };
   }, []);
 
@@ -773,9 +787,9 @@ export default function LandingPage({ user: initialUser, authStatus }) {
           {/* VERDICT */}
           <section className="ds-verdict-landing">
             <div className="ds-verdict-split">
-              <div className="ds-verdict-content" style={{padding:"48px 44px 48px 56px"}}>
+              <div className="ds-verdict-content" style={{padding:"56px 48px 56px 64px"}}>
                 <span className="ds-section-lbl ds-reveal">The verdict</span>
-                <h2 className="ds-verdict-h2 ds-reveal ds-reveal-d1" style={{marginBottom:"12px"}}>
+                <h2 className="ds-verdict-h2 ds-reveal ds-reveal-d1" style={{marginBottom:"8px"}}>
                   <span className="ds-verdict-line1">Four dimensions.</span>
                   <span className="ds-verdict-line2">No softening.</span>
                 </h2>
@@ -848,46 +862,51 @@ export default function LandingPage({ user: initialUser, authStatus }) {
       )}
 
       {/* FOOTER */}
-      <footer style={{padding:"36px 48px 28px",background:"var(--ink)",display:"flex",flexDirection:"column",gap:"20px"}}>
+      <footer className="ds-footer" style={{display:"flex",flexDirection:"column",gap:"20px",padding:"36px 48px 28px",background:"var(--ink)"}}>
+
         {/* Row 1: Logo left | Email+LinkedIn center */}
-        <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",alignItems:"center",width:"100%"}}>
+        <div className="ds-f-row">
           <div className="ds-logo-wrap" onClick={() => goPage("home")}>
             <DSLogo size={22} light={true} />
-            <span className="ds-logo">Design Sparring</span>
+            <span className="ds-logo" style={{color:"rgba(249,247,242,0.75)"}}>Design Sparring</span>
           </div>
-          <div style={{display:"flex",alignItems:"center",gap:"28px"}}>
-            <a href="mailto:contact@design-sparring.org" style={{fontFamily:"'Roboto',sans-serif",fontSize:"13px",color:"rgba(249,247,242,0.9)",textDecoration:"none",fontWeight:400,transition:"color 0.2s"}}
-              onMouseEnter={e=>e.target.style.color="#fff"} onMouseLeave={e=>e.target.style.color="rgba(249,247,242,0.9)"}>
+          <div className="ds-f-social">
+            <a href="mailto:contact@design-sparring.org"
+              style={{fontFamily:"'Roboto',sans-serif",fontSize:"13px",color:"rgba(249,247,242,0.9)",textDecoration:"none",fontWeight:400}}>
               contact@design-sparring.org
             </a>
             <a href="https://www.linkedin.com/company/design-decision" target="_blank" rel="noopener noreferrer"
-              style={{display:"flex",alignItems:"center",gap:"7px",fontFamily:"'Roboto',sans-serif",fontSize:"13px",color:"rgba(249,247,242,0.9)",textDecoration:"none",fontWeight:400,transition:"color 0.2s"}}
-              onMouseEnter={e=>e.currentTarget.style.color="#fff"} onMouseLeave={e=>e.currentTarget.style.color="rgba(249,247,242,0.9)"}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              style={{display:"flex",alignItems:"center",gap:"7px",fontFamily:"'Roboto',sans-serif",fontSize:"13px",color:"rgba(249,247,242,0.9)",textDecoration:"none",fontWeight:400}}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
               </svg>
               Design Sparring on LinkedIn
             </a>
           </div>
-          <div />
+          <div className="ds-f-spacer" />
         </div>
-        {/* Row 2: divider */}
-        <div style={{borderTop:"1px solid rgba(249,247,242,0.1)"}} />
-        {/* Row 3: Legal center | Rights right */}
-        <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",alignItems:"center",width:"100%"}}>
-          <div />
-          <div style={{display:"flex",gap:"20px",alignItems:"center",justifyContent:"center"}}>
+
+        {/* Divider */}
+        <div style={{borderTop:"1px solid rgba(249,247,242,0.1)",width:"100%"}} />
+
+        {/* Row 2: Privacy center | Rights right */}
+        <div className="ds-f-row">
+          <div className="ds-f-spacer" />
+          <div className="ds-f-legal">
             {["privacy","terms","cookies"].map(p => (
-              <button key={p} onClick={() => goPage(p)} style={{fontFamily:"'Roboto',sans-serif",fontSize:"13px",color:"rgba(249,247,242,0.45)",background:"none",border:"none",cursor:"pointer",padding:0,fontWeight:400,textTransform:"capitalize",transition:"color 0.2s"}}
-                onMouseEnter={e=>e.target.style.color="rgba(249,247,242,0.85)"} onMouseLeave={e=>e.target.style.color="rgba(249,247,242,0.45)"}>
+              <button key={p} onClick={() => goPage(p)}
+                style={{fontFamily:"'Roboto',sans-serif",fontSize:"13px",color:"rgba(249,247,242,0.45)",background:"none",border:"none",cursor:"pointer",padding:0,fontWeight:400,textTransform:"capitalize"}}>
                 {p.charAt(0).toUpperCase()+p.slice(1)}
               </button>
             ))}
           </div>
-          <div style={{textAlign:"right"}}>
-            <span style={{fontFamily:"'Roboto',sans-serif",fontSize:"12px",color:"rgba(249,247,242,0.35)",fontWeight:400}}>All rights reserved @design-sparring.org. 2026</span>
+          <div className="ds-f-rights">
+            <span style={{fontFamily:"'Roboto',sans-serif",fontSize:"12px",color:"rgba(249,247,242,0.35)",fontWeight:400}}>
+              All rights reserved @design-sparring.org. 2026
+            </span>
           </div>
         </div>
+
       </footer>
 
       {/* COOKIE */}
