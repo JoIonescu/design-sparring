@@ -98,7 +98,7 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .ds-step-body { font-size: 15px; color: var(--muted); line-height: 1.9; font-weight: 400; }
 
 /* VERDICT SECTION */
-.ds-score-row { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; border-bottom: 1px solid rgba(26,23,20,0.06); gap: 32px; }
+.ds-score-row { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid rgba(26,23,20,0.06); gap: 24px; }
 .ds-score-row:first-child { border-top: 1px solid rgba(0,0,0,0.08); }
 .ds-score-meta { flex: 1; }
 .ds-score-lbl { font-family: var(--sans); font-size: 15px; font-weight: 500; display: block; margin-bottom: 4px; }
@@ -145,12 +145,17 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .ds-back-btn:hover { opacity: 1; color: var(--accent); }
 
 /* FOOTER */
-.ds-footer { padding: 40px 48px; background: var(--ink); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
-.ds-footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+.ds-footer { padding: 36px 48px 28px; background: var(--ink); display: flex; flex-direction: column; gap: 20px; }
+.ds-footer-top { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+.ds-footer-center { display: flex; align-items: center; gap: 28px; }
+.ds-footer-bottom { display: flex; align-items: center; justify-content: space-between; width: 100%; border-top: 1px solid rgba(249,247,242,0.1); padding-top: 18px; }
 .ds-footer .ds-logo { color: var(--bg); opacity: 0.7; }
-.ds-footer-links button { font-size: 13px; color: rgba(249,247,242,0.5); transition: color 0.2s; background: none; border: none; cursor: pointer; font-family: var(--sans); padding: 0; font-weight: 400; }
-.ds-footer-links button:hover { color: var(--bg); }
-.ds-footer-copy { font-family: var(--mono); font-size: 12px; color: rgba(249,247,242,0.4); }
+.ds-footer-legal { display: flex; gap: 20px; align-items: center; }
+.ds-footer-legal button { font-size: 13px; color: rgba(249,247,242,0.45); transition: color 0.2s; background: none; border: none; cursor: pointer; font-family: var(--sans); padding: 0; font-weight: 400; }
+.ds-footer-legal button:hover { color: var(--bg); }
+.ds-footer-rights { font-family: var(--sans); font-size: 12px; color: rgba(249,247,242,0.4); font-weight: 400; }
+.ds-footer-email { font-family: var(--sans); font-size: 13px; color: rgba(249,247,242,0.85); text-decoration: none; transition: color 0.2s; font-weight: 400; }
+.ds-footer-email:hover { color: #fff; }
 
 /* MODALS */
 .ds-overlay { position: fixed; inset: 0; background: rgba(26,23,20,0.7); z-index: 500; display: flex; align-items: center; justify-content: center; padding: 24px; backdrop-filter: blur(4px); }
@@ -295,7 +300,7 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 /* LINKEDIN FOOTER LINK */
 .ds-footer-email { font-size: 13px; color: rgba(249,247,242,0.5); text-decoration: none; transition: color 0.2s; font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; }
 .ds-footer-email:hover { color: var(--bg); }
-.ds-footer-linkedin { display: flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(249,247,242,0.5); text-decoration: none; transition: color 0.2s; font-family: var(--sans); font-weight: 400; }
+.ds-footer-linkedin { display: flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(249,247,242,0.85); text-decoration: none; transition: color 0.2s; font-family: var(--sans); font-weight: 400; }
 .ds-footer-linkedin:hover { color: var(--bg); }
 .ds-footer-linkedin svg { flex-shrink: 0; }
 
@@ -305,16 +310,16 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 @keyframes fade-up { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
 
 /* QUIZ NAV BUTTON */
-.ds-quiz-nav-pill { display: inline-flex; align-items: center; gap: 7px; background: transparent; border: 2px solid var(--accent); border-radius: 100px; cursor: pointer; font-family: var(--sans); font-size: 14px; font-weight: 600; color: var(--accent); padding: 9px 22px; white-space: nowrap; transition: background 0.2s, color 0.2s; }
+.ds-quiz-nav-pill { display: inline-flex; align-items: center; gap: 7px; background: transparent; border: 2px solid var(--accent); border-radius: 100px; cursor: pointer; font-family: var(--sans); font-size: 14px; font-weight: 400; color: var(--accent); padding: 9px 24px; white-space: nowrap; transition: background 0.2s, color 0.2s; }
 .ds-quiz-nav-pill:hover { background: var(--accent); color: #fff; }
 .ds-quiz-dot { display: none; }
 
 /* VERDICT TWO-COLUMN SPLIT */
 .ds-verdict-landing { overflow: hidden; position: relative; }
 .ds-verdict-split { display: grid; grid-template-columns: 3fr 2fr; align-items: stretch; min-height: 480px; }
-.ds-verdict-content { padding: 64px 56px; display: flex; flex-direction: column; justify-content: center; background: var(--bg); }
+.ds-verdict-content { padding: 52px 48px 52px 60px; display: flex; flex-direction: column; justify-content: center; background: var(--bg); }
 .ds-verdict-image { background-size: cover; background-position: center; background-color: #111; min-height: 480px; }
-.ds-verdict-h2 { font-family: var(--display); font-size: clamp(28px, 3.5vw, 46px); font-weight: 700; line-height: 1.1; margin-bottom: 24px; letter-spacing: -0.02em; }
+.ds-verdict-h2 { font-family: var(--display); font-size: clamp(28px, 3.5vw, 46px); font-weight: 700; line-height: 1.1; margin-bottom: 16px; letter-spacing: -0.02em; }
 .ds-verdict-line1 { color: var(--accent); display: block; }
 .ds-verdict-line2 { color: var(--ink); display: block; }
 .ds-score-lbl { font-family: var(--display) !important; font-size: 16px !important; font-weight: 700 !important; display: block !important; margin-bottom: 5px !important; letter-spacing: 0.03em !important; text-transform: uppercase !important; }
@@ -353,7 +358,7 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
   /* ── NAV ──────────────────────────────────────── */
   .ds-nav { padding: 12px 16px; gap: 8px; }
   .ds-logo { font-size: 11px; letter-spacing: 0.1em; }
-  .ds-hamburger { display: flex; }
+  .ds-hamburger { display: none; }
   .ds-nav-links { display: none !important; }
   .ds-quiz-nav-pill { font-size: 11px; padding: 6px 13px; animation: none; border-width: 1.5px; }
   .ds-account-wrap .ds-account-btn { padding: 6px 10px; }
@@ -421,15 +426,16 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
   .ds-btn-outline { align-self: stretch; text-align: center; }
 
   /* ── FOOTER ────────────────────────────────────── */
-  .ds-footer { flex-direction: column; align-items: center; padding: 32px 20px; gap: 18px; text-align: center; }
-  .ds-footer-links { justify-content: center; gap: 14px; flex-wrap: wrap; }
-  .ds-footer-linkedin { justify-content: center; }
-  .ds-footer-copy { order: 3; }
+  .ds-footer { padding: 28px 20px 20px; gap: 16px; }
+  .ds-footer-top { flex-direction: column; gap: 16px; align-items: center; text-align: center; }
+  .ds-footer-center { flex-direction: column; gap: 12px; align-items: center; }
+  .ds-footer-bottom { flex-direction: column; gap: 10px; align-items: center; text-align: center; }
+  .ds-footer-legal { justify-content: center; gap: 16px; }
 
   /* ── MODALS ────────────────────────────────────── */
-  .ds-overlay { padding: 0; align-items: flex-end; }
-  .ds-modal { border-radius: 16px 16px 0 0; max-height: 88vh; width: 100%; max-width: 100%; padding: 32px 20px 44px; margin: 0; }
-  .ds-modal-wide { border-radius: 16px 16px 0 0; max-height: 92vh; overflow-y: auto; max-width: 100%; width: 100%; padding: 28px 20px 40px; }
+  .ds-overlay { padding: 16px; align-items: center; }
+  .ds-modal { border-radius: 14px; max-height: 88vh; width: 100%; max-width: 440px; padding: 32px 20px 36px; margin: 0; }
+  .ds-modal-wide { border-radius: 14px; max-height: 92vh; overflow-y: auto; max-width: 100%; width: 100%; padding: 28px 20px 36px; }
   .ds-gate-cards { grid-template-columns: 1fr; }
   .ds-gate-card { padding: 22px 18px; }
   .ds-gate-title { font-size: 22px; }

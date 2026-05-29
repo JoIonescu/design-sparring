@@ -488,7 +488,6 @@ export default function LandingPage({ user: initialUser, authStatus }) {
   const [cookiesAccepted, setCookiesAccepted] = useState(true); // true by default avoids flash
   const [activeRound, setActiveRound] = useState(0);
   const [sessions, setSessions] = useState(null);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [upgrading, setUpgrading] = useState(false);
   const router = useRouter();
 
@@ -638,28 +637,6 @@ export default function LandingPage({ user: initialUser, authStatus }) {
   return (
     <div className="ds" onClick={() => acctOpen && setAcctOpen(false)}>
       {/* NAV */}
-      {mobileMenuOpen && (
-        <div className="ds-mobile-overlay">
-          <button className="ds-mobile-overlay-close" onClick={() => setMobileMenuOpen(false)}>✕</button>
-          {user?.plan === "paid" ? (
-            <>
-              <button className="ds-mobile-nav-btn" onClick={() => { setMobileMenuOpen(false); goPage("spar"); }}>Start Sparring</button>
-              <button className="ds-mobile-nav-btn" style={{color:"var(--accent)",fontWeight:600}} onClick={() => { setMobileMenuOpen(false); goPage("quiz"); }}>Take the test</button>
-              <div className="ds-mobile-nav-divider" />
-              <button className="ds-mobile-nav-btn" onClick={() => { setMobileMenuOpen(false); openModal("history"); }}>Session History</button>
-              <button className="ds-mobile-nav-btn" onClick={() => { setMobileMenuOpen(false); handleLogout(); }}>Sign Out</button>
-            </>
-          ) : (
-            <>
-              <button className="ds-mobile-nav-btn" onClick={() => { setMobileMenuOpen(false); goPage("spar"); }}>Start sparring free</button>
-              <button className="ds-mobile-nav-btn" onClick={() => { setMobileMenuOpen(false); goPage("quiz"); }}>Decision Style</button>
-              <div className="ds-mobile-nav-divider" />
-              <button className="ds-mobile-nav-btn" onClick={() => { setMobileMenuOpen(false); openModal("login"); }}>Sign In</button>
-              <button className="ds-mobile-nav-btn" style={{color:"var(--accent)"}} onClick={() => { setMobileMenuOpen(false); openModal("signup"); }}>Get Full Access</button>
-            </>
-          )}
-        </div>
-      )}
       <nav className="ds-nav">
         <div className="ds-logo-wrap" onClick={() => goPage("home")}>
           <DSLogo size={26} />
@@ -693,11 +670,6 @@ export default function LandingPage({ user: initialUser, authStatus }) {
               <button className="ds-cta-sm" onClick={() => openModal("signup")}>Get full access</button>
             </div>
           )}
-          <button className="ds-hamburger" onClick={() => setMobileMenuOpen(true)} aria-label="Open menu">
-            <span className="ds-hamburger-line"/>
-            <span className="ds-hamburger-line"/>
-            <span className="ds-hamburger-line"/>
-          </button>
         </div>
       </nav>
 
@@ -863,28 +835,29 @@ export default function LandingPage({ user: initialUser, authStatus }) {
 
       {/* FOOTER */}
       <footer className="ds-footer">
-        <div className="ds-logo-wrap" onClick={() => goPage("home")}>
-          <DSLogo size={22} light={true} />
-          <span className="ds-logo">Design Sparring</span>
+        <div className="ds-footer-top">
+          <div className="ds-logo-wrap" onClick={() => goPage("home")}>
+            <DSLogo size={22} light={true} />
+            <span className="ds-logo">Design Sparring</span>
+          </div>
+          <div className="ds-footer-center">
+            <a href="mailto:contact@design-sparring.org" className="ds-footer-email">contact@design-sparring.org</a>
+            <a href="https://www.linkedin.com/company/design-decision" target="_blank" rel="noopener noreferrer" className="ds-footer-linkedin">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+              Design Sparring on LinkedIn
+            </a>
+          </div>
         </div>
-        <div className="ds-footer-links">
-          <button onClick={() => goPage("privacy")}>Privacy</button>
-          <button onClick={() => goPage("terms")}>Terms</button>
-          <button onClick={() => goPage("cookies")}>Cookies</button>
-          <a href="mailto:contact@design-sparring.org" className="ds-footer-email">contact@design-sparring.org</a>
-          <a
-            href="https://www.linkedin.com/company/design-decision"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ds-footer-linkedin"
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-            </svg>
-            Design Sparring on LinkedIn
-          </a>
+        <div className="ds-footer-bottom">
+          <div className="ds-footer-legal">
+            <button onClick={() => goPage("privacy")}>Privacy</button>
+            <button onClick={() => goPage("terms")}>Terms</button>
+            <button onClick={() => goPage("cookies")}>Cookies</button>
+          </div>
+          <span className="ds-footer-rights">All rights reserved @design-sparring.org. 2026</span>
         </div>
-        <span className="ds-footer-copy">2026</span>
       </footer>
 
       {/* COOKIE */}
